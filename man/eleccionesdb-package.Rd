@@ -4,17 +4,25 @@
 \name{eleccionesdb-package}
 \alias{eleccionesdb}
 \alias{eleccionesdb-package}
-\title{eleccionesdb: R Client for the EleccionesDB API}
+\title{eleccionesdb: R Client for EleccionesDB Electoral Data}
 \description{
-Provides functions to access the EleccionesDB REST API for Spanish electoral data. Returns tidy tibbles ready for analysis, supports automatic pagination, and handles nested JSON structures with sensible flattening. Covers elections, territories, parties, results, and CERA (overseas vote) endpoints.
+Provides functions to access Spanish electoral data through the EleccionesDB REST API or an optional local SQLite snapshot. Returns tidy tibbles ready for analysis, supports automatic pagination, and handles nested JSON structures with sensible flattening. Covers elections, territories, parties, results, and CERA (overseas vote) endpoints.
 
-Provides functions to access the eleccionesdb REST API for Spanish
-electoral data. All functions return tidy tibbles ready for analysis
-with the tidyverse.
+Provides functions to access Spanish electoral data through the eleccionesdb
+REST API or an optional local SQLite snapshot. Query functions keep the same
+interface in both backends and return tidy tibbles ready for analysis.
 }
 \details{
 This is a package-level documentation file for eleccionesdb.
 }
+\section{Backend de datos}{
+
+La API es el backend predeterminado. Descarga el snapshot local con
+\code{\link[=edb_download_sqlite]{edb_download_sqlite()}} y actívalo para la sesión con
+\code{edb_set_backend("sqlite")}. Consulta \code{vignette("backend-sqlite")} para más
+detalles sobre actualizaciones, rutas personalizadas y fallback.
+}
+
 \section{Autenticación y configuración}{
 
 Desde abril de 2026, la mayoría de endpoints requieren autenticación mediante API key.

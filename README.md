@@ -81,6 +81,29 @@ attr(tbl, "edb_total")
 #> [1] 16
 ```
 
+## Backend SQLite
+
+Para consultas grandes o trabajo sin conexión puede descargarse el snapshot
+SQLite oficial y usar las mismas funciones del paquete:
+
+``` r
+# Requiere los paquetes opcionales DBI, RSQLite, digest y jsonlite
+edb_download_sqlite()
+edb_set_backend("sqlite")
+
+get_resultados(
+  tipo_eleccion = "G", year = "2019",
+  tipo_territorio = "municipio"
+)
+
+edb_check_sqlite_update()
+edb_set_backend("api")
+```
+
+La selección dura únicamente durante la sesión y las actualizaciones se
+comprueban de forma explícita. Consulta `vignette("backend-sqlite")` para rutas
+personalizadas, validación y política de fallback.
+
 ## Function reference
 
 ### Elections
@@ -173,6 +196,11 @@ get_partidos(siglas = "psoe", api_key = "OTRA_CLAVE")
 | `edb_set_api_key(key, persist=FALSE)` | Set API key (session/persistente) |
 | `edb_get_api_key()`     | Get current API key                      |
 | `edb_get_base_url()`    | Get current API base URL |
+| `edb_set_backend()`     | Seleccionar API o SQLite para la sesión |
+| `edb_get_backend()`     | Consultar el backend activo |
+| `edb_download_sqlite()` | Descargar o actualizar el snapshot local |
+| `edb_check_sqlite_update()` | Comprobar si hay una versión nueva |
+| `edb_sqlite_path()`     | Ruta local predeterminada |
 
 ## Nested data handling
 

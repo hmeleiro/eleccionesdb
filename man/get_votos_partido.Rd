@@ -61,7 +61,7 @@ code(s). Optional.}
 \item{denormalize}{Logical. If \code{TRUE}, adds descriptive columns next to
 ID columns: \code{eleccion_descripcion} (after \code{eleccion_id}),
 \code{territorio_nombre} (after \code{territorio_id}), and \code{partido_nombre}
-(after \code{partido_id}). Requires additional API calls. Default \code{FALSE}.}
+(after \code{partido_id}). Requires additional lookups. Default \code{FALSE}.}
 
 \item{use_recode}{Logical. If \code{TRUE} and \code{denormalize = TRUE}, the
 \code{partido_nombre} column uses the recode group name (\code{agrupacion})

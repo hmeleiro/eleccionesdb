@@ -1,11 +1,14 @@
 Package: eleccionesdb
-Title: R Client for the EleccionesDB API
+Title: R Client for EleccionesDB Electoral Data
 Version: 0.1.0
+Depends:
+    R (>= 4.1.0)
 Authors@R:
     person("Héctor", "Meleiro", email = "hmeleiro@gmail.com",
            role = c("aut", "cre"))
-Description: Provides functions to access the EleccionesDB REST API for
-    Spanish electoral data. Returns tidy tibbles ready for analysis,
+Description: Provides functions to access Spanish electoral data through the
+    EleccionesDB REST API or an optional local SQLite snapshot. Returns tidy
+    tibbles ready for analysis,
     supports automatic pagination, and handles nested JSON structures
     with sensible flattening. Covers elections, territories, parties,
     results, and CERA (overseas vote) endpoints.
@@ -22,14 +25,19 @@ Imports:
     tibble,
     vctrs
 Suggests:
+    DBI,
+    digest,
     dplyr,
     ggplot2,
+    jsonlite,
     knitr,
     pkgdown,
     rmarkdown,
+    RSQLite,
     testthat (>= 3.0.0),
     tidyr,
-    withr
+    withr,
+    zip
 Config/testthat/edition: 3
 Config/Needs/website: hmeleiro/spainelectoraltheme
 VignetteBuilder: knitr

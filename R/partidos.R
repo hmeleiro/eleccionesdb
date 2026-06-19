@@ -32,6 +32,11 @@ get_partidos <- function(siglas = NULL, denominacion = NULL,
                          partido_recode_id = NULL,
                          limit = 50L, skip = 0L, all_pages = FALSE,
                          api_key = NULL) {
+    if (edb_backend_is_sqlite()) {
+        return(sqlite_get_partidos(
+            siglas, denominacion, partido_recode_id, limit, skip, all_pages
+        ))
+    }
     params <- list(
         siglas = siglas,
         denominacion = denominacion,
@@ -69,6 +74,7 @@ get_partidos <- function(siglas = NULL, denominacion = NULL,
 #' get_partido(11911)
 #' }
 get_partido <- function(partido_id) {
+    if (edb_backend_is_sqlite()) return(sqlite_get_partido(partido_id))
     json <- edb_get(paste0("/v1/partidos/", partido_id))
     tbl <- parse_single(json)
     tbl <- flatten_nested(tbl, "recode", "recode")
@@ -96,6 +102,9 @@ get_partido <- function(partido_id) {
 #' }
 get_partidos_recode <- function(agrupacion = NULL, limit = 50L, skip = 0L,
                                 all_pages = FALSE) {
+    if (edb_backend_is_sqlite()) {
+        return(sqlite_get_partidos_recode(agrupacion, limit, skip, all_pages))
+    }
     params <- list(agrupacion = agrupacion)
     edb_paginated_get(
         path = "/v1/partidos-recode",
@@ -131,6 +140,9 @@ get_partidos_recode <- function(agrupacion = NULL, limit = 50L, skip = 0L,
 #' nrow(result$partidos) # Can be ~2200 for IU
 #' }
 get_partido_recode <- function(partido_recode_id, api_key = NULL) {
+    if (edb_backend_is_sqlite()) {
+        return(sqlite_get_partido_recode(partido_recode_id))
+    }
     json <- edb_get(paste0("/v1/partidos-recode/", partido_recode_id), api_key = api_key)
 
     partidos_data <- json[["partidos"]] %||% list()

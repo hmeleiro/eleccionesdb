@@ -66,14 +66,24 @@ get_totales_territorio_eleccion <- function(eleccion_id,
         codigo_provincia = codigo_provincia,
         codigo_municipio = codigo_municipio
     )
-    tbl <- edb_paginated_get(
-        path = paste0("/v1/elecciones/", eleccion_id, "/totales-territorio"),
-        params = params,
-        limit = limit,
-        skip = skip,
-        all_pages = all_pages,
-        api_key = api_key
-    )
+    if (edb_backend_is_sqlite()) {
+        tbl <- sqlite_get_totales(
+            eleccion_id = eleccion_id, territorio_id = territorio_id,
+            tipo_territorio = tipo_territorio, codigo_ccaa = codigo_ccaa,
+            codigo_provincia = codigo_provincia,
+            codigo_municipio = codigo_municipio,
+            limit = limit, skip = skip, all_pages = all_pages
+        )
+    } else {
+        tbl <- edb_paginated_get(
+            path = paste0("/v1/elecciones/", eleccion_id, "/totales-territorio"),
+            params = params,
+            limit = limit,
+            skip = skip,
+            all_pages = all_pages,
+            api_key = api_key
+        )
+    }
     if (denormalize) {
         tbl <- denormalize_tbl(tbl)
     }
@@ -99,7 +109,7 @@ get_totales_territorio_eleccion <- function(eleccion_id,
 #' @param denormalize Logical. If `TRUE`, adds descriptive columns next to
 #'   ID columns: `eleccion_descripcion`, `territorio_nombre` (in both
 #'   `totales_territorio` and `votos_partido`), and `partido_nombre`
-#'   (in `votos_partido`). Requires additional API calls. Default `FALSE`.
+#'   (in `votos_partido`). Requires additional lookups. Default `FALSE`.
 #' @param use_recode Logical. If `TRUE` and `denormalize = TRUE`, the
 #'   `partido_nombre` column uses the recode group name (`agrupacion`)
 #'   instead of the party abbreviation (`siglas`). Falls back to `siglas`
@@ -139,23 +149,25 @@ get_resultado_completo <- function(eleccion_id, territorio_id, ...,
                                    clean = denormalize,
                                    api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
-    path <- paste0(
-        "/v1/elecciones/", eleccion_id, "/totales-territorio/",
-        territorio_id
-    )
-    json <- edb_get(path, api_key = api_key)
-
-    totales_data <- json[["totales_territorio"]]
-    votos_data <- json[["votos_partido"]] %||% list()
-
-    totales_tbl <- if (!is.null(totales_data)) {
-        parse_single(totales_data)
+    if (edb_backend_is_sqlite()) {
+        result <- sqlite_get_resultado_completo(eleccion_id, territorio_id)
+        totales_tbl <- result[["totales_territorio"]]
+        votos_tbl <- result[["votos_partido"]]
     } else {
-        tibble::tibble()
+        path <- paste0(
+            "/v1/elecciones/", eleccion_id, "/totales-territorio/",
+            territorio_id
+        )
+        json <- edb_get(path, api_key = api_key)
+        totales_data <- json[["totales_territorio"]]
+        votos_data <- json[["votos_partido"]] %||% list()
+        totales_tbl <- if (!is.null(totales_data)) {
+            parse_single(totales_data)
+        } else {
+            tibble::tibble()
+        }
+        votos_tbl <- flatten_partido(safe_tibble(votos_data))
     }
-
-    votos_tbl <- safe_tibble(votos_data)
-    votos_tbl <- flatten_partido(votos_tbl)
 
     if (denormalize) {
         totales_tbl <- denormalize_tbl(totales_tbl)
@@ -238,24 +250,32 @@ get_totales_territorio <- function(year = NULL, tipo_eleccion = NULL,
                                    clean = denormalize,
                                    api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
-    filters <- Filter(Negate(is.null), list(
-        eleccion_id    = to_json_array(eleccion_id),
-        territorio_id  = to_json_array(territorio_id),
-        year           = to_json_str_array(year),
-        tipo_eleccion  = to_json_str_array(tipo_eleccion),
-        tipo_territorio = to_json_str_array(tipo_territorio),
-        codigo_ccaa    = to_json_str_array(codigo_ccaa),
-        codigo_provincia = to_json_str_array(codigo_provincia),
-        codigo_municipio = to_json_str_array(codigo_municipio)
-    ))
-    tbl <- edb_paginated_post(
-        path = "/v1/resultados/totales-territorio",
-        filters = filters,
-        limit = limit,
-        skip = skip,
-        all_pages = all_pages,
-        api_key = api_key
-    )
+    if (edb_backend_is_sqlite()) {
+        tbl <- sqlite_get_totales(
+            eleccion_id, territorio_id, year, tipo_eleccion, tipo_territorio,
+            codigo_ccaa, codigo_provincia, codigo_municipio,
+            limit, skip, all_pages
+        )
+    } else {
+        filters <- Filter(Negate(is.null), list(
+            eleccion_id    = to_json_array(eleccion_id),
+            territorio_id  = to_json_array(territorio_id),
+            year           = to_json_str_array(year),
+            tipo_eleccion  = to_json_str_array(tipo_eleccion),
+            tipo_territorio = to_json_str_array(tipo_territorio),
+            codigo_ccaa    = to_json_str_array(codigo_ccaa),
+            codigo_provincia = to_json_str_array(codigo_provincia),
+            codigo_municipio = to_json_str_array(codigo_municipio)
+        ))
+        tbl <- edb_paginated_post(
+            path = "/v1/resultados/totales-territorio",
+            filters = filters,
+            limit = limit,
+            skip = skip,
+            all_pages = all_pages,
+            api_key = api_key
+        )
+    }
     if (denormalize) {
         tbl <- denormalize_tbl(tbl)
     }
@@ -292,7 +312,7 @@ get_totales_territorio <- function(year = NULL, tipo_eleccion = NULL,
 #' @param denormalize Logical. If `TRUE`, adds descriptive columns next to
 #'   ID columns: `eleccion_descripcion` (after `eleccion_id`),
 #'   `territorio_nombre` (after `territorio_id`), and `partido_nombre`
-#'   (after `partido_id`). Requires additional API calls. Default `FALSE`.
+#'   (after `partido_id`). Requires additional lookups. Default `FALSE`.
 #' @param use_recode Logical. If `TRUE` and `denormalize = TRUE`, the
 #'   `partido_nombre` column uses the recode group name (`agrupacion`)
 #'   instead of the party abbreviation (`siglas`). Falls back to `siglas`
@@ -332,25 +352,33 @@ get_votos_partido <- function(year = NULL, tipo_eleccion = NULL,
                               clean = denormalize,
                               api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
-    filters <- Filter(Negate(is.null), list(
-        eleccion_id    = to_json_array(eleccion_id),
-        territorio_id  = to_json_array(territorio_id),
-        partido_id     = to_json_array(partido_id),
-        year           = to_json_str_array(year),
-        tipo_eleccion  = to_json_str_array(tipo_eleccion),
-        tipo_territorio = to_json_str_array(tipo_territorio),
-        codigo_ccaa    = to_json_str_array(codigo_ccaa),
-        codigo_provincia = to_json_str_array(codigo_provincia),
-        codigo_municipio = to_json_str_array(codigo_municipio)
-    ))
-    tbl <- edb_paginated_post(
-        path = "/v1/resultados/votos-partido",
-        filters = filters,
-        limit = limit,
-        skip = skip,
-        all_pages = all_pages,
-        api_key = api_key
-    )
+    if (edb_backend_is_sqlite()) {
+        tbl <- sqlite_get_votos(
+            eleccion_id, territorio_id, partido_id, year, tipo_eleccion,
+            tipo_territorio, codigo_ccaa, codigo_provincia, codigo_municipio,
+            limit, skip, all_pages
+        )
+    } else {
+        filters <- Filter(Negate(is.null), list(
+            eleccion_id    = to_json_array(eleccion_id),
+            territorio_id  = to_json_array(territorio_id),
+            partido_id     = to_json_array(partido_id),
+            year           = to_json_str_array(year),
+            tipo_eleccion  = to_json_str_array(tipo_eleccion),
+            tipo_territorio = to_json_str_array(tipo_territorio),
+            codigo_ccaa    = to_json_str_array(codigo_ccaa),
+            codigo_provincia = to_json_str_array(codigo_provincia),
+            codigo_municipio = to_json_str_array(codigo_municipio)
+        ))
+        tbl <- edb_paginated_post(
+            path = "/v1/resultados/votos-partido",
+            filters = filters,
+            limit = limit,
+            skip = skip,
+            all_pages = all_pages,
+            api_key = api_key
+        )
+    }
     if (denormalize) {
         tbl <- denormalize_tbl(tbl, use_recode = use_recode)
     }
@@ -368,11 +396,10 @@ get_votos_partido <- function(year = NULL, tipo_eleccion = NULL,
 #' and election metadata, all joined internally so no manual merging is
 #' needed.
 #'
-#' Two API calls are made internally: one to `/v1/resultados/combinados`
-#' (votes + party + territory + election, fully expanded) and one to
-#' `/v1/resultados/totales-territorio` (census and turnout totals). The
-#' results are joined by `(eleccion_id, territorio_id)` before being
-#' returned.
+#' With the API backend, two calls are made internally: one for expanded votes
+#' and another for territorial totals. With SQLite, the same result is produced
+#' by a local relational query. Both are joined by `(eleccion_id,
+#' territorio_id)` before being returned.
 #'
 #' When `clean = TRUE` (the default), prefixed columns are renamed to short,
 #' user-friendly names and only the most useful columns are returned.
@@ -459,27 +486,35 @@ get_resultados <- function(year = NULL, tipo_eleccion = NULL,
                            all_pages = TRUE,
                            clean = TRUE,
                            api_key = NULL) {
-    filters <- Filter(Negate(is.null), list(
-        eleccion_id    = to_json_array(eleccion_id),
-        territorio_id  = to_json_array(territorio_id),
-        partido_id     = to_json_array(partido_id),
-        year           = to_json_str_array(year),
-        tipo_eleccion  = to_json_str_array(tipo_eleccion),
-        tipo_territorio = to_json_str_array(tipo_territorio),
-        codigo_ccaa    = to_json_str_array(codigo_ccaa),
-        codigo_provincia = to_json_str_array(codigo_provincia),
-        codigo_municipio = to_json_str_array(codigo_municipio)
-    ))
-    tbl <- edb_paginated_post(
-        path = "/v1/resultados/combinados",
-        filters = filters,
-        limit = limit,
-        skip = skip,
-        all_pages = all_pages,
-        parse_fn = flatten_combinados,
-        api_key = api_key
-    )
-    tbl <- enrich_with_resumen(tbl, api_key = api_key)
+    if (edb_backend_is_sqlite()) {
+        tbl <- sqlite_get_resultados(
+            eleccion_id, territorio_id, partido_id, year, tipo_eleccion,
+            tipo_territorio, codigo_ccaa, codigo_provincia, codigo_municipio,
+            limit, skip, all_pages
+        )
+    } else {
+        filters <- Filter(Negate(is.null), list(
+            eleccion_id    = to_json_array(eleccion_id),
+            territorio_id  = to_json_array(territorio_id),
+            partido_id     = to_json_array(partido_id),
+            year           = to_json_str_array(year),
+            tipo_eleccion  = to_json_str_array(tipo_eleccion),
+            tipo_territorio = to_json_str_array(tipo_territorio),
+            codigo_ccaa    = to_json_str_array(codigo_ccaa),
+            codigo_provincia = to_json_str_array(codigo_provincia),
+            codigo_municipio = to_json_str_array(codigo_municipio)
+        ))
+        tbl <- edb_paginated_post(
+            path = "/v1/resultados/combinados",
+            filters = filters,
+            limit = limit,
+            skip = skip,
+            all_pages = all_pages,
+            parse_fn = flatten_combinados,
+            api_key = api_key
+        )
+        tbl <- enrich_with_resumen(tbl, api_key = api_key)
+    }
     if (clean) {
         tbl <- clean_combinados_tbl(tbl)
     } else {

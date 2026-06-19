@@ -19,6 +19,7 @@ articles:
       - voto-exterior-cera
   - title: Avanzado
     contents:
+      - backend-sqlite
       - autodespliegue
       - autenticacion-api-key
 
@@ -78,6 +79,11 @@ reference:
       - edb_get_api_key
       - edb_set_base_url
       - edb_get_base_url
+      - edb_set_backend
+      - edb_get_backend
+      - edb_sqlite_path
+      - edb_download_sqlite
+      - edb_check_sqlite_update
 
 footer:
   structure:

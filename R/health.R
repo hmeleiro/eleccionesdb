@@ -10,6 +10,7 @@
 #' get_health()
 #' }
 get_health <- function() {
+    if (edb_backend_is_sqlite()) edb_warn_api_fallback("get_health()")
     json <- edb_get("/health")
     parse_single(json)
 }

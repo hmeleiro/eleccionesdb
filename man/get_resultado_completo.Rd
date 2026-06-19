@@ -24,7 +24,7 @@ get_resultado_completo(
 \item{denormalize}{Logical. If \code{TRUE}, adds descriptive columns next to
 ID columns: \code{eleccion_descripcion}, \code{territorio_nombre} (in both
 \code{totales_territorio} and \code{votos_partido}), and \code{partido_nombre}
-(in \code{votos_partido}). Requires additional API calls. Default \code{FALSE}.}
+(in \code{votos_partido}). Requires additional lookups. Default \code{FALSE}.}
 
 \item{use_recode}{Logical. If \code{TRUE} and \code{denormalize = TRUE}, the
 \code{partido_nombre} column uses the recode group name (\code{agrupacion})

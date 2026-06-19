@@ -47,14 +47,23 @@ get_cera_resumen <- function(year = NULL, tipo_eleccion = NULL,
         year = year,
         tipo_eleccion = tipo_eleccion
     )
-    tbl <- edb_paginated_get(
-        path = "/v1/resultados/cera/resumen",
-        params = params,
-        limit = limit,
-        skip = skip,
-        all_pages = all_pages,
-        api_key = api_key
-    )
+    if (edb_backend_is_sqlite()) {
+        tbl <- sqlite_get_totales(
+            eleccion_id = eleccion_id, territorio_id = territorio_id,
+            year = year, tipo_eleccion = tipo_eleccion,
+            tipo_territorio = "cera", limit = limit, skip = skip,
+            all_pages = all_pages
+        )
+    } else {
+        tbl <- edb_paginated_get(
+            path = "/v1/resultados/cera/resumen",
+            params = params,
+            limit = limit,
+            skip = skip,
+            all_pages = all_pages,
+            api_key = api_key
+        )
+    }
     if (denormalize) {
         tbl <- denormalize_tbl(tbl)
     }
@@ -82,7 +91,7 @@ get_cera_resumen <- function(year = NULL, tipo_eleccion = NULL,
 #' @param denormalize Logical. If `TRUE`, adds descriptive columns next to
 #'   ID columns: `eleccion_descripcion` (after `eleccion_id`),
 #'   `territorio_nombre` (after `territorio_id`), and `partido_nombre`
-#'   (after `partido_id`). Requires additional API calls. Default `FALSE`.
+#'   (after `partido_id`). Requires additional lookups. Default `FALSE`.
 #' @param use_recode Logical. If `TRUE` and `denormalize = TRUE`, the
 #'   `partido_nombre` column uses the recode group name (`agrupacion`)
 #'   instead of the party abbreviation (`siglas`). Falls back to `siglas`
@@ -121,14 +130,23 @@ get_cera_votos <- function(year = NULL, tipo_eleccion = NULL,
         year = year,
         tipo_eleccion = tipo_eleccion
     )
-    tbl <- edb_paginated_get(
-        path = "/v1/resultados/cera/votos",
-        params = params,
-        limit = limit,
-        skip = skip,
-        all_pages = all_pages,
-        api_key = api_key
-    )
+    if (edb_backend_is_sqlite()) {
+        tbl <- sqlite_get_votos(
+            eleccion_id = eleccion_id, territorio_id = territorio_id,
+            partido_id = partido_id, year = year,
+            tipo_eleccion = tipo_eleccion, tipo_territorio = "cera",
+            limit = limit, skip = skip, all_pages = all_pages
+        )
+    } else {
+        tbl <- edb_paginated_get(
+            path = "/v1/resultados/cera/votos",
+            params = params,
+            limit = limit,
+            skip = skip,
+            all_pages = all_pages,
+            api_key = api_key
+        )
+    }
     if (denormalize) {
         tbl <- denormalize_tbl(tbl, use_recode = use_recode)
     }

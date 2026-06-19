@@ -87,11 +87,9 @@ and election metadata, all joined internally so no manual merging is
 needed.
 }
 \details{
-Two API calls are made internally: one to \verb{/v1/resultados/combinados}
-(votes + party + territory + election, fully expanded) and one to
-\verb{/v1/resultados/totales-territorio} (census and turnout totals). The
-results are joined by \verb{(eleccion_id, territorio_id)} before being
-returned.
+With the API backend, two calls are made internally: one for expanded votes
+and another for territorial totals. With SQLite, the same result is produced
+by a local relational query. Both are joined by \verb{(eleccion_id, territorio_id)} before being returned.
 
 When \code{clean = TRUE} (the default), prefixed columns are renamed to short,
 user-friendly names and only the most useful columns are returned.

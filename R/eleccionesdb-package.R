@@ -2,11 +2,17 @@
 #' @importFrom rlang %||%
 "_PACKAGE"
 
-#' eleccionesdb: R Client for the eleccionesdb API
+#' eleccionesdb: R client for EleccionesDB electoral data
 #'
-#' Provides functions to access the eleccionesdb REST API for Spanish
-#' electoral data. All functions return tidy tibbles ready for analysis
-#' with the tidyverse.
+#' Provides functions to access Spanish electoral data through the eleccionesdb
+#' REST API or an optional local SQLite snapshot. Query functions keep the same
+#' interface in both backends and return tidy tibbles ready for analysis.
+#'
+#' @section Backend de datos:
+#' La API es el backend predeterminado. Descarga el snapshot local con
+#' [edb_download_sqlite()] y actívalo para la sesión con
+#' `edb_set_backend("sqlite")`. Consulta `vignette("backend-sqlite")` para más
+#' detalles sobre actualizaciones, rutas personalizadas y fallback.
 #'
 #' @section Autenticación y configuración:
 #' Desde abril de 2026, la mayoría de endpoints requieren autenticación mediante API key.

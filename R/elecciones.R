@@ -19,6 +19,7 @@
 #' }
 get_tipos_eleccion <- function(api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) return(sqlite_get_tipos_eleccion())
     json <- edb_get("/v1/tipos-eleccion", api_key = api_key)
     parse_array(json)
 }
@@ -36,6 +37,7 @@ get_tipos_eleccion <- function(api_key = NULL) {
 #' }
 get_tipo_eleccion <- function(codigo, api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) return(sqlite_get_tipo_eleccion(codigo))
     json <- edb_get(paste0("/v1/tipos-eleccion/", codigo), api_key = api_key)
     parse_single(json)
 }
@@ -78,6 +80,11 @@ get_elecciones <- function(tipo_eleccion = NULL, year = NULL, mes = NULL,
                            ambito = NULL, limit = 50L, skip = 0L,
                            all_pages = FALSE, api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) {
+        return(sqlite_get_elecciones(
+            tipo_eleccion, year, mes, ambito, limit, skip, all_pages
+        ))
+    }
     params <- list(
         tipo_eleccion = tipo_eleccion,
         year = year,
@@ -111,6 +118,7 @@ get_elecciones <- function(tipo_eleccion = NULL, year = NULL, mes = NULL,
 #' }
 get_eleccion <- function(eleccion_id, api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) return(sqlite_get_eleccion(eleccion_id))
     json <- edb_get(paste0("/v1/elecciones/", eleccion_id), api_key = api_key)
     tbl <- parse_single(json)
     tbl <- flatten_nested(tbl, "tipo", "tipo")

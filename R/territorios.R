@@ -37,6 +37,12 @@ get_territorios <- function(tipo = NULL, codigo_ccaa = NULL,
                             codigo_circunscripcion = NULL, nombre = NULL,
                             limit = 50L, skip = 0L, all_pages = FALSE, api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) {
+        return(sqlite_get_territorios(
+            tipo, codigo_ccaa, codigo_provincia, codigo_municipio,
+            codigo_circunscripcion, nombre, limit, skip, all_pages
+        ))
+    }
     params <- list(
         tipo = tipo,
         codigo_ccaa = codigo_ccaa,
@@ -72,6 +78,7 @@ get_territorios <- function(tipo = NULL, codigo_ccaa = NULL,
 #' }
 get_territorio <- function(territorio_id, api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) return(sqlite_get_territorio(territorio_id))
     json <- edb_get(paste0("/v1/territorios/", territorio_id), api_key = api_key)
     parse_single(json)
 }
@@ -96,6 +103,12 @@ get_territorio <- function(territorio_id, api_key = NULL) {
 get_territorio_hijos <- function(territorio_id, limit = 50L, skip = 0L,
                                  all_pages = FALSE, api_key = NULL) {
     #' @param api_key (Opcional) Clave de API para sobrescribir la global solo en esta llamada.
+    if (edb_backend_is_sqlite()) {
+        return(sqlite_get_territorios(
+            limit = limit, skip = skip, all_pages = all_pages,
+            parent_id = territorio_id
+        ))
+    }
     edb_paginated_get(
         path = paste0("/v1/territorios/", territorio_id, "/hijos"),
         limit = limit,

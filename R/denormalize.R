@@ -56,17 +56,21 @@ add_eleccion_desc <- function(tbl) {
         return(reorder_after(tbl, "eleccion_id", "eleccion_descripcion"))
     }
 
-    lookup <- vapply(ids, function(id) {
-        tryCatch(
-            {
-                json <- edb_get(paste0("/v1/elecciones/", id))
-                json[["descripcion"]] %||% NA_character_
-            },
-            error = function(err) NA_character_
-        )
-    }, character(1))
-
-    tbl[["eleccion_descripcion"]] <- lookup[match(tbl[["eleccion_id"]], ids)]
+    if (edb_backend_is_sqlite()) {
+        lookup <- sqlite_lookup_labels("eleccion", ids)
+        tbl[["eleccion_descripcion"]] <- unname(lookup[as.character(tbl[["eleccion_id"]])])
+    } else {
+        lookup <- vapply(ids, function(id) {
+            tryCatch(
+                {
+                    json <- edb_get(paste0("/v1/elecciones/", id))
+                    json[["descripcion"]] %||% NA_character_
+                },
+                error = function(err) NA_character_
+            )
+        }, character(1))
+        tbl[["eleccion_descripcion"]] <- lookup[match(tbl[["eleccion_id"]], ids)]
+    }
     reorder_after(tbl, "eleccion_id", "eleccion_descripcion")
 }
 
@@ -81,17 +85,21 @@ add_territorio_nombre <- function(tbl) {
         return(reorder_after(tbl, "territorio_id", "territorio_nombre"))
     }
 
-    lookup <- vapply(ids, function(id) {
-        tryCatch(
-            {
-                json <- edb_get(paste0("/v1/territorios/", id))
-                json[["nombre"]] %||% NA_character_
-            },
-            error = function(err) NA_character_
-        )
-    }, character(1))
-
-    tbl[["territorio_nombre"]] <- lookup[match(tbl[["territorio_id"]], ids)]
+    if (edb_backend_is_sqlite()) {
+        lookup <- sqlite_lookup_labels("territorio", ids)
+        tbl[["territorio_nombre"]] <- unname(lookup[as.character(tbl[["territorio_id"]])])
+    } else {
+        lookup <- vapply(ids, function(id) {
+            tryCatch(
+                {
+                    json <- edb_get(paste0("/v1/territorios/", id))
+                    json[["nombre"]] %||% NA_character_
+                },
+                error = function(err) NA_character_
+            )
+        }, character(1))
+        tbl[["territorio_nombre"]] <- lookup[match(tbl[["territorio_id"]], ids)]
+    }
     reorder_after(tbl, "territorio_id", "territorio_nombre")
 }
 
@@ -111,23 +119,27 @@ add_partido_nombre <- function(tbl, use_recode = FALSE) {
         return(reorder_after(tbl, "partido_id", "partido_nombre"))
     }
 
-    lookup <- vapply(ids, function(id) {
-        tryCatch(
-            {
-                json <- edb_get(paste0("/v1/partidos/", id))
-                if (use_recode) {
-                    recode <- json[["recode"]]
-                    if (is.list(recode) && !is.null(recode[["agrupacion"]])) {
-                        return(recode[["agrupacion"]])
+    if (edb_backend_is_sqlite()) {
+        lookup <- sqlite_lookup_labels("partido", ids, use_recode)
+        tbl[["partido_nombre"]] <- unname(lookup[as.character(tbl[["partido_id"]])])
+    } else {
+        lookup <- vapply(ids, function(id) {
+            tryCatch(
+                {
+                    json <- edb_get(paste0("/v1/partidos/", id))
+                    if (use_recode) {
+                        recode <- json[["recode"]]
+                        if (is.list(recode) && !is.null(recode[["agrupacion"]])) {
+                            return(recode[["agrupacion"]])
+                        }
                     }
-                }
-                json[["siglas"]] %||% NA_character_
-            },
-            error = function(err) NA_character_
-        )
-    }, character(1))
-
-    tbl[["partido_nombre"]] <- lookup[match(tbl[["partido_id"]], ids)]
+                    json[["siglas"]] %||% NA_character_
+                },
+                error = function(err) NA_character_
+            )
+        }, character(1))
+        tbl[["partido_nombre"]] <- lookup[match(tbl[["partido_id"]], ids)]
+    }
     reorder_after(tbl, "partido_id", "partido_nombre")
 }
 
