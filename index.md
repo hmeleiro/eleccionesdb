@@ -13,6 +13,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 ## Installation
 
 ``` r
+
 # Install from local source
 devtools::install_local("hmeleiro/eleccionesdb-r")
 
@@ -23,6 +24,7 @@ devtools::install_local("hmeleiro/eleccionesdb-r")
 ## Quick start
 
 ``` r
+
 library(eleccionesdb)
 library(dplyr)
 
@@ -67,6 +69,7 @@ get_resultados(
 All list endpoints support pagination:
 
 ``` r
+
 # Default: first 50 records
 get_elecciones()
 
@@ -81,21 +84,47 @@ The tibble returned carries an `"edb_total"` attribute with the total
 count:
 
 ``` r
+
 tbl <- get_elecciones(tipo_eleccion = "G")
 attr(tbl, "edb_total")
 #> [1] 16
 ```
 
+## Backend SQLite
+
+Para consultas grandes o trabajo sin conexión puede descargarse el
+snapshot SQLite oficial y usar las mismas funciones del paquete:
+
+``` r
+
+# Requiere los paquetes opcionales DBI, RSQLite, digest y jsonlite
+edb_download_sqlite()
+edb_set_backend("sqlite")
+
+get_resultados(
+  tipo_eleccion = "G", year = "2019",
+  tipo_territorio = "municipio"
+)
+
+edb_check_sqlite_update()
+edb_set_backend("api")
+```
+
+La selección dura únicamente durante la sesión y las actualizaciones se
+comprueban de forma explícita. Consulta
+[`vignette("backend-sqlite")`](https://hmeleiro.github.io/eleccionesdb-r/articles/backend-sqlite.md)
+para rutas personalizadas, validación y política de fallback.
+
 ## Function reference
 
 ### Elections
 
-| Function                                                                                            | Description                            |
-|-----------------------------------------------------------------------------------------------------|----------------------------------------|
-| [`get_tipos_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_tipos_eleccion.md) | Catalogue of election types            |
-| `get_tipo_eleccion(codigo)`                                                                         | Single election type by code           |
-| `get_elecciones(...)`                                                                               | List elections (filterable, paginated) |
-| `get_eleccion(id)`                                                                                  | Election detail (with tipo flattened)  |
+| Function | Description |
+|----|----|
+| [`get_tipos_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_tipos_eleccion.md) | Catalogue of election types |
+| `get_tipo_eleccion(codigo)` | Single election type by code |
+| `get_elecciones(...)` | List elections (filterable, paginated) |
+| `get_eleccion(id)` | Election detail (with tipo flattened) |
 
 ### Territories
 
@@ -116,13 +145,13 @@ attr(tbl, "edb_total")
 
 ### Results
 
-| Function                                   | Description                                |
-|--------------------------------------------|--------------------------------------------|
-| `get_totales_territorio_eleccion(id, ...)` | Territorial totals for one election        |
-| `get_resultado_completo(elec_id, terr_id)` | Totals + per-party votes                   |
-| `get_totales_territorio(...)`              | Territorial totals (cross-election)        |
-| `get_votos_partido(...)`                   | Per-party votes (cross-election)           |
-| `get_resultados(...)`                      | Fully expanded results (best for analysis) |
+| Function | Description |
+|----|----|
+| `get_totales_territorio_eleccion(id, ...)` | Territorial totals for one election |
+| `get_resultado_completo(elec_id, terr_id)` | Totals + per-party votes |
+| `get_totales_territorio(...)` | Territorial totals (cross-election) |
+| `get_votos_partido(...)` | Per-party votes (cross-election) |
+| `get_resultados(...)` | Fully expanded results (best for analysis) |
 
 ### CERA (overseas vote)
 
@@ -149,6 +178,7 @@ mediante API key.
 #### Cómo registrar la clave en R
 
 ``` r
+
 # Guardar la clave solo para la sesión actual:
 edb_set_api_key("TU_API_KEY")
 
@@ -160,6 +190,7 @@ edb_set_api_key("TU_API_KEY", persist = TRUE)
 Puedes consultar la clave actual con:
 
 ``` r
+
 edb_get_api_key()
 ```
 
@@ -170,18 +201,24 @@ registrada automáticamente. Si lo deseas, puedes pasar una clave
 distinta solo para una llamada:
 
 ``` r
+
 get_partidos(siglas = "psoe", api_key = "OTRA_CLAVE")
 ```
 
 #### Funciones de configuración
 
-| Function                                                                                        | Description                       |
-|-------------------------------------------------------------------------------------------------|-----------------------------------|
-| `edb_set_base_url(url)`                                                                         | Set API base URL                  |
-| [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md) | Get current API base URL          |
-| `edb_set_api_key(key, persist=FALSE)`                                                           | Set API key (session/persistente) |
-| [`edb_get_api_key()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_api_key.md)   | Get current API key               |
-| [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md) | Get current API base URL          |
+| Function | Description |
+|----|----|
+| `edb_set_base_url(url)` | Set API base URL |
+| [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md) | Get current API base URL |
+| `edb_set_api_key(key, persist=FALSE)` | Set API key (session/persistente) |
+| [`edb_get_api_key()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_api_key.md) | Get current API key |
+| [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md) | Get current API base URL |
+| [`edb_set_backend()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_set_backend.md) | Seleccionar API o SQLite para la sesión |
+| [`edb_get_backend()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_backend.md) | Consultar el backend activo |
+| [`edb_download_sqlite()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_download_sqlite.md) | Descargar o actualizar el snapshot local |
+| [`edb_check_sqlite_update()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_check_sqlite_update.md) | Comprobar si hay una versión nueva |
+| [`edb_sqlite_path()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_sqlite_path.md) | Ruta local predeterminada |
 
 ## Nested data handling
 
@@ -202,6 +239,7 @@ votes), the function returns a **named list** instead of trying to force
 it into one tibble:
 
 ``` r
+
 result <- get_resultado_completo(208, 20)
 result$totales_territorio  # 1-row tibble with census/participation data
 result$votos_partido       # tibble of per-party votes (partido flattened)
@@ -214,6 +252,7 @@ recode$partidos  # tibble of associated parties (can be thousands)
 ## Error handling
 
 ``` r
+
 # 404 — resource not found
 get_eleccion(99999)
 #> Error: API error (404): Elección no encontrada

@@ -16,10 +16,10 @@ apunte a tu servidor.
 El proyecto se compone de dos piezas que puedes desplegar de forma
 independiente:
 
-| Componente           | Descripción                                                                                                 | Documentación                                                        |
-|----------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| **eleccionesdb-etl** | Pipeline ETL (R + {targets}) que genera la base de datos PostgreSQL a partir de datos electorales en bruto. | [Documentación](https://eleccionesdb.spainelectoralproject.com/)     |
-| **eleccionesdb-api** | API REST (Python + FastAPI) que expone la base de datos como endpoints JSON.                                | [Documentación](https://eleccionesdb-api.spainelectoralproject.com/) |
+| Componente | Descripción | Documentación |
+|----|----|----|
+| **eleccionesdb-etl** | Pipeline ETL (R + {targets}) que genera la base de datos PostgreSQL a partir de datos electorales en bruto. | [Documentación](https://eleccionesdb.spainelectoralproject.com/) |
+| **eleccionesdb-api** | API REST (Python + FastAPI) que expone la base de datos como endpoints JSON. | [Documentación](https://eleccionesdb-api.spainelectoralproject.com/) |
 
 ## Paso 1: Levantar la base de datos
 
@@ -89,6 +89,7 @@ Una vez que tu API esté funcionando, configura el paquete para que
 apunte a ella:
 
 ``` r
+
 library(eleccionesdb)
 
 # Opción 1: variable de entorno (recomendado para uso habitual)
@@ -103,6 +104,7 @@ edb_set_base_url("http://mi-servidor:8000")
 Puedes verificar la conexión en cualquier momento:
 
 ``` r
+
 # Comprobar a qué URL apunta el paquete
 edb_get_base_url()
 #> [1] "http://mi-servidor:8000"
@@ -125,5 +127,6 @@ etc.) usarán tu instancia de la API.
 Para volver a usar la API pública de Spain Electoral Project:
 
 ``` r
+
 edb_set_base_url("https://api.spainelectoralproject.com")
 ```

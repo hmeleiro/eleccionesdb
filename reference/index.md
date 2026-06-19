@@ -90,3 +90,13 @@ para más detalles.
   : Set the EleccionesDB API base URL
 - [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md)
   : Get the current EleccionesDB API base URL
+- [`edb_set_backend()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_set_backend.md)
+  : Configure the EleccionesDB data backend
+- [`edb_get_backend()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_backend.md)
+  : Inspect the active EleccionesDB backend
+- [`edb_sqlite_path()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_sqlite_path.md)
+  : Default path for the EleccionesDB SQLite snapshot
+- [`edb_download_sqlite()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_download_sqlite.md)
+  : Download or update the EleccionesDB SQLite snapshot
+- [`edb_check_sqlite_update()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_check_sqlite_update.md)
+  : Check whether a newer SQLite snapshot is available

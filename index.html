@@ -5,16 +5,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>R Client for the EleccionesDB API • eleccionesdb</title>
+<title>R Client for EleccionesDB Electoral Data • eleccionesdb</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Inter-0.4.10/font.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/Inter-0.4.10/font.css" rel="stylesheet">
 <link href="deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="R Client for the EleccionesDB API">
-<meta name="description" content="Provides functions to access the EleccionesDB REST API for Spanish electoral data. Returns tidy tibbles ready for analysis, supports automatic pagination, and handles nested JSON structures with sensible flattening. Covers elections, territories, parties, results, and CERA (overseas vote) endpoints.">
-<meta property="og:description" content="Provides functions to access the EleccionesDB REST API for Spanish electoral data. Returns tidy tibbles ready for analysis, supports automatic pagination, and handles nested JSON structures with sensible flattening. Covers elections, territories, parties, results, and CERA (overseas vote) endpoints.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="R Client for EleccionesDB Electoral Data">
+<meta name="description" content="Provides functions to access Spanish electoral data through the EleccionesDB REST API or an optional local SQLite snapshot. Returns tidy tibbles ready for analysis, supports automatic pagination, and handles nested JSON structures with sensible flattening. Covers elections, territories, parties, results, and CERA (overseas vote) endpoints.">
+<meta property="og:description" content="Provides functions to access Spanish electoral data through the EleccionesDB REST API or an optional local SQLite snapshot. Returns tidy tibbles ready for analysis, supports automatic pagination, and handles nested JSON structures with sensible flattening. Covers elections, territories, parties, results, and CERA (overseas vote) endpoints.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -127,30 +127,48 @@
 <span><span class="co">#&gt; [1] 16</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="backend-sqlite">Backend SQLite<a class="anchor" aria-label="anchor" href="#backend-sqlite"></a>
+</h2>
+<p>Para consultas grandes o trabajo sin conexión puede descargarse el snapshot SQLite oficial y usar las mismas funciones del paquete:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Requiere los paquetes opcionales DBI, RSQLite, digest y jsonlite</span></span>
+<span><span class="fu"><a href="reference/edb_download_sqlite.html">edb_download_sqlite</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/edb_set_backend.html">edb_set_backend</a></span><span class="op">(</span><span class="st">"sqlite"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/get_resultados.html">get_resultados</a></span><span class="op">(</span></span>
+<span>  tipo_eleccion <span class="op">=</span> <span class="st">"G"</span>, year <span class="op">=</span> <span class="st">"2019"</span>,</span>
+<span>  tipo_territorio <span class="op">=</span> <span class="st">"municipio"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/edb_check_sqlite_update.html">edb_check_sqlite_update</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/edb_set_backend.html">edb_set_backend</a></span><span class="op">(</span><span class="st">"api"</span><span class="op">)</span></span></code></pre></div>
+<p>La selección dura únicamente durante la sesión y las actualizaciones se comprueban de forma explícita. Consulta <code><a href="articles/backend-sqlite.html">vignette("backend-sqlite")</a></code> para rutas personalizadas, validación y política de fallback.</p>
+</div>
+<div class="section level2">
 <h2 id="function-reference">Function reference<a class="anchor" aria-label="anchor" href="#function-reference"></a>
 </h2>
 <div class="section level3">
 <h3 id="elections">Elections<a class="anchor" aria-label="anchor" href="#elections"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_tipos_eleccion.html">get_tipos_eleccion()</a></code></td>
 <td>Catalogue of election types</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_tipo_eleccion(codigo)</code></td>
 <td>Single election type by code</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>get_elecciones(...)</code></td>
 <td>List elections (filterable, paginated)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_eleccion(id)</code></td>
 <td>Election detail (with tipo flattened)</td>
 </tr>
@@ -165,20 +183,20 @@
 <col width="40%">
 <col width="60%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>get_territorios(...)</code></td>
 <td>List territories (filterable, paginated)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_territorio(id)</code></td>
 <td>Territory detail (all codes)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>get_territorio_hijos(id)</code></td>
 <td>Children of a territory</td>
 </tr>
@@ -189,24 +207,24 @@
 <h3 id="parties">Parties<a class="anchor" aria-label="anchor" href="#parties"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>get_partidos(...)</code></td>
 <td>List parties (filterable, paginated)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_partido(id)</code></td>
 <td>Party detail (with recode flattened)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>get_partidos_recode(...)</code></td>
 <td>List recode groups (paginated)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_partido_recode(id)</code></td>
 <td>Recode detail + associated parties</td>
 </tr>
@@ -221,28 +239,28 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>get_totales_territorio_eleccion(id, ...)</code></td>
 <td>Territorial totals for one election</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_resultado_completo(elec_id, terr_id)</code></td>
 <td>Totals + per-party votes</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>get_totales_territorio(...)</code></td>
 <td>Territorial totals (cross-election)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_votos_partido(...)</code></td>
 <td>Per-party votes (cross-election)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>get_resultados(...)</code></td>
 <td>Fully expanded results (best for analysis)</td>
 </tr>
@@ -253,16 +271,16 @@
 <h3 id="cera-overseas-vote">CERA (overseas vote)<a class="anchor" aria-label="anchor" href="#cera-overseas-vote"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>get_cera_resumen(...)</code></td>
 <td>CERA summaries</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_cera_votos(...)</code></td>
 <td>CERA per-party votes</td>
 </tr>
@@ -288,7 +306,7 @@
 <div class="section level4">
 <h4 id="cómo-registrar-la-clave-en-r">Cómo registrar la clave en R<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-registrar-la-clave-en-r"></a>
 </h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Guardar la clave solo para la sesión actual:</span></span>
 <span><span class="fu"><a href="reference/edb_set_api_key.html">edb_set_api_key</a></span><span class="op">(</span><span class="st">"TU_API_KEY"</span><span class="op">)</span></span>
 <span></span>
@@ -296,14 +314,14 @@
 <span><span class="fu"><a href="reference/edb_set_api_key.html">edb_set_api_key</a></span><span class="op">(</span><span class="st">"TU_API_KEY"</span>, persist <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># Reinicia R para que esté disponible globalmente.</span></span></code></pre></div>
 <p>Puedes consultar la clave actual con:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/edb_get_api_key.html">edb_get_api_key</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="uso-automático-y-sobrescritura">Uso automático y sobrescritura<a class="anchor" aria-label="anchor" href="#uso-autom%C3%A1tico-y-sobrescritura"></a>
 </h4>
 <p>Todas las funciones que acceden a endpoints protegidos usan la clave registrada automáticamente. Si lo deseas, puedes pasar una clave distinta solo para una llamada:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_partidos.html">get_partidos</a></span><span class="op">(</span>siglas <span class="op">=</span> <span class="st">"psoe"</span>, api_key <span class="op">=</span> <span class="st">"OTRA_CLAVE"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -314,30 +332,50 @@
 <col width="37%">
 <col width="62%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>edb_set_base_url(url)</code></td>
 <td>Set API base URL</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/edb_get_base_url.html">edb_get_base_url()</a></code></td>
 <td>Get current API base URL</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>edb_set_api_key(key, persist=FALSE)</code></td>
 <td>Set API key (session/persistente)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/edb_get_api_key.html">edb_get_api_key()</a></code></td>
 <td>Get current API key</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/edb_get_base_url.html">edb_get_base_url()</a></code></td>
 <td>Get current API base URL</td>
+</tr>
+<tr>
+<td><code><a href="reference/edb_set_backend.html">edb_set_backend()</a></code></td>
+<td>Seleccionar API o SQLite para la sesión</td>
+</tr>
+<tr>
+<td><code><a href="reference/edb_get_backend.html">edb_get_backend()</a></code></td>
+<td>Consultar el backend activo</td>
+</tr>
+<tr>
+<td><code><a href="reference/edb_download_sqlite.html">edb_download_sqlite()</a></code></td>
+<td>Descargar o actualizar el snapshot local</td>
+</tr>
+<tr>
+<td><code><a href="reference/edb_check_sqlite_update.html">edb_check_sqlite_update()</a></code></td>
+<td>Comprobar si hay una versión nueva</td>
+</tr>
+<tr>
+<td><code><a href="reference/edb_sqlite_path.html">edb_sqlite_path()</a></code></td>
+<td>Ruta local predeterminada</td>
 </tr>
 </tbody>
 </table>
@@ -359,7 +397,7 @@
 <strong><code><a href="reference/get_resultados.html">get_resultados()</a></code></strong>: Flattens and renames <code>partido.*</code>, <code>recode.*</code>, <code>territorio.*</code>, <code>eleccion.*</code> (<code>clean = TRUE</code> by default)</li>
 </ul>
 <p>When an endpoint returns heterogeneous structures (a summary + a list of votes), the function returns a <strong>named list</strong> instead of trying to force it into one tibble:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_resultado_completo.html">get_resultado_completo</a></span><span class="op">(</span><span class="fl">208</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">totales_territorio</span>  <span class="co"># 1-row tibble with census/participation data</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">votos_partido</span>       <span class="co"># tibble of per-party votes (partido flattened)</span></span>
@@ -371,7 +409,7 @@
 <div class="section level2">
 <h2 id="error-handling">Error handling<a class="anchor" aria-label="anchor" href="#error-handling"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 404 — resource not found</span></span>
 <span><span class="fu"><a href="reference/get_eleccion.html">get_eleccion</a></span><span class="op">(</span><span class="fl">99999</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error: API error (404): Elección no encontrada</span></span>

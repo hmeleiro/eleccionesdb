@@ -16,6 +16,8 @@
 
 ### Avanzado
 
+- [Backend
+  SQLite](https://hmeleiro.github.io/eleccionesdb-r/articles/backend-sqlite.md):
 - [Despliegue propio de la base de datos y la
   API](https://hmeleiro.github.io/eleccionesdb-r/articles/autodespliegue.md):
 - [Autenticación: cómo establecer la API

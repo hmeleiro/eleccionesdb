@@ -21,6 +21,7 @@ Puedes registrar la clave solo para la sesión actual (o de forma
 persistente) usando:
 
 ``` r
+
 library(eleccionesdb)
 
 # Solo para la sesión actual
@@ -37,6 +38,7 @@ automáticamente. Si lo deseas, puedes sobrescribirla en una llamada
 concreta:
 
 ``` r
+
 get_partidos(siglas = "psoe", api_key = "OTRA_CLAVE")
 ```
 

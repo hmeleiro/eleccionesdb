@@ -1,6 +1,7 @@
 # Territorios y partidos
 
 ``` r
+
 library(eleccionesdb)
 library(dplyr)
 ```
@@ -39,6 +40,7 @@ devuelve un listado paginado que puedes filtrar por tipo, códigos
 jerárquicos y nombre:
 
 ``` r
+
 # Todas las comunidades autónomas
 ccaas <- get_territorios(tipo = "ccaa", all_pages = TRUE)
 ccaas
@@ -52,6 +54,7 @@ ccaas
 ```
 
 ``` r
+
 # Provincias de Andalucía (codigo_ccaa = "01")
 provincias_andalucia <- get_territorios(
   tipo = "provincia",
@@ -69,6 +72,7 @@ provincias_andalucia
 ```
 
 ``` r
+
 # Buscar por nombre (búsqueda parcial)
 get_territorios(nombre = "madrid")
 #> # A tibble: 50 × 5
@@ -86,6 +90,7 @@ get_territorios(nombre = "madrid")
 devuelve todos los códigos jerárquicos de un territorio:
 
 ``` r
+
 # Detalle de la provincia de Sevilla
 get_territorio(27)
 #> # A tibble: 1 × 12
@@ -103,6 +108,7 @@ devuelve los hijos directos de un territorio, permitiendo recorrer la
 jerarquía de arriba a abajo:
 
 ``` r
+
 # Hijos de Andalucía (id = 1) → sus 8 provincias
 provincias <- get_territorio_hijos(1, all_pages = TRUE)
 provincias
@@ -120,6 +126,7 @@ provincias
 ```
 
 ``` r
+
 # Municipios de la provincia de Sevilla (id = 27)
 municipios_sevilla <- get_territorio_hijos(27, all_pages = TRUE)
 nrow(municipios_sevilla)
@@ -137,6 +144,7 @@ head(municipios_sevilla)
 #### Ejemplo: recorrer la jerarquía completa
 
 ``` r
+
 # Obtener todas las CCAAs y contar sus provincias
 ccaas <- get_territorios(tipo = "ccaa", all_pages = TRUE)
 
@@ -167,6 +175,7 @@ permite buscar partidos por siglas, denominación o por su grupo de
 recode:
 
 ``` r
+
 # Buscar partidos con siglas "PSOE"
 get_partidos(siglas = "psoe")
 #> # A tibble: 50 × 4
@@ -179,6 +188,7 @@ get_partidos(siglas = "psoe")
 ```
 
 ``` r
+
 # Buscar por denominación
 get_partidos(denominacion = "popular", limit = 5)
 
@@ -193,6 +203,7 @@ devuelve el detalle completo de un partido, con los datos del recode
 expandidos como columnas con prefijo `recode_`:
 
 ``` r
+
 get_partido(9451)
 #> # A tibble: 1 × 7
 #>      id siglas   denominacion                      partido_recode_id recode_id
@@ -212,6 +223,7 @@ ejemplo, las distintas candidaturas del PSOE en cada comunidad autónoma
 se agrupan bajo el recode “PSOE”.
 
 ``` r
+
 # Listar agrupaciones
 get_partidos_recode()
 #> # A tibble: 50 × 4
@@ -224,6 +236,7 @@ get_partidos_recode()
 ```
 
 ``` r
+
 # Buscar por agrupación
 get_partidos_recode(agrupacion = "izquierda")
 ```
@@ -240,6 +253,7 @@ Se usa una lista porque un grupo puede contener cientos o miles de
 partidos:
 
 ``` r
+
 resultado <- get_partido_recode(80)
 
 # Información del grupo
@@ -266,6 +280,7 @@ head(resultado$partidos)
 #### Ejemplo: explorar las familias más grandes
 
 ``` r
+
 recodes <- get_partidos_recode(all_pages = TRUE)
 
 # Para cada agrupación, contar cuántos partidos incluye

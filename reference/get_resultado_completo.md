@@ -37,7 +37,7 @@ get_resultado_completo(
   Logical. If `TRUE`, adds descriptive columns next to ID columns:
   `eleccion_descripcion`, `territorio_nombre` (in both
   `totales_territorio` and `votos_partido`), and `partido_nombre` (in
-  `votos_partido`). Requires additional API calls. Default `FALSE`.
+  `votos_partido`). Requires additional lookups. Default `FALSE`.
 
 - use_recode:
 

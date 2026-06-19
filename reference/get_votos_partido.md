@@ -91,7 +91,7 @@ get_votos_partido(
   Logical. If `TRUE`, adds descriptive columns next to ID columns:
   `eleccion_descripcion` (after `eleccion_id`), `territorio_nombre`
   (after `territorio_id`), and `partido_nombre` (after `partido_id`).
-  Requires additional API calls. Default `FALSE`.
+  Requires additional lookups. Default `FALSE`.
 
 - use_recode:
 

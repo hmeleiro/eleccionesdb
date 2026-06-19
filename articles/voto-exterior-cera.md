@@ -1,6 +1,7 @@
 # Voto exterior (CERA)
 
 ``` r
+
 library(eleccionesdb)
 library(dplyr)
 library(ggplot2)
@@ -16,10 +17,10 @@ nacional y se gestionan a través de circunscripciones específicas.
 El paquete **eleccionesdb** ofrece dos funciones para acceder a estos
 datos:
 
-| Función                                                                                         | Devuelve                                                              |
-|-------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| Función | Devuelve |
+|----|----|
 | [`get_cera_resumen()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_resumen.md) | Resúmenes de participación CERA (censo, votos válidos, abstenciones…) |
-| [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md)     | Votos por partido en el exterior                                      |
+| [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md) | Votos por partido en el exterior |
 
 Ambas funciones soportan paginación (`limit`, `skip`, `all_pages`) y los
 mismos filtros cruzados que los endpoints de resultados nacionales.
@@ -40,6 +41,7 @@ devuelve datos agregados de participación del voto exterior: censo,
 participación, votos válidos, nulos, en blanco y abstenciones.
 
 ``` r
+
 # Resúmenes CERA de todas las elecciones generales
 cera_generales <- get_cera_resumen(
   tipo_eleccion = "G",
@@ -59,6 +61,7 @@ cera_generales
 ### Filtrar por elección
 
 ``` r
+
 # CERA para las generales de abril 2019
 cera_28a <- get_cera_resumen(eleccion_id = 208, all_pages = TRUE)
 cera_28a
@@ -67,6 +70,7 @@ cera_28a
 ### Filtrar por año
 
 ``` r
+
 # Todos los CERA de 2019 (abril y noviembre)
 cera_2019 <- get_cera_resumen(year = "2019", all_pages = TRUE)
 ```
@@ -79,6 +83,7 @@ cera_2019 <- get_cera_resumen(year = "2019", all_pages = TRUE)
 devuelve el desglose de votos por partido en las circunscripciones CERA:
 
 ``` r
+
 # Votos CERA de las generales de abril 2019
 votos_cera <- get_cera_votos(
   eleccion_id = 208,
@@ -96,6 +101,7 @@ votos_cera
 ### Filtrar por partido
 
 ``` r
+
 # Votos CERA de un partido concreto en todas las elecciones
 votos_psoe_cera <- get_cera_votos(
   partido_id = 9451,
@@ -112,6 +118,7 @@ Podemos comparar la participación del voto exterior con la participación
 nacional en una misma elección:
 
 ``` r
+
 elec_id <- 208
 
 # Participación nacional (a nivel de CCAA)
@@ -155,6 +162,7 @@ comparativa
 ### Gráfico comparativo
 
 ``` r
+
 ggplot(comparativa, aes(x = tipo, y = tasa, fill = tipo)) +
   geom_col(width = 0.5) +
   geom_text(aes(label = sprintf("%.1f%%", tasa)), vjust = -0.5, size = 5) +
@@ -178,6 +186,7 @@ Con `denormalize = TRUE` y `use_recode = TRUE`, podemos obtener los
 nombres de partido directamente, sin necesidad de hacer joins manuales:
 
 ``` r
+
 # Votos CERA con nombres de partido (usando agrupación recode)
 votos_cera <- get_cera_votos(
   eleccion_id = 208,
@@ -200,6 +209,7 @@ También se puede enriquecer con colores obteniendo el recode por
 separado:
 
 ``` r
+
 # Obtener colores de las agrupaciones principales
 recodes <- get_partidos_recode(all_pages = TRUE)
 resultado_cera <- totales_cera |>
@@ -213,6 +223,7 @@ resultado_cera
 ### Gráfico: votos CERA por partido
 
 ``` r
+
 colores_cera <- setNames(resultado_cera$color, resultado_cera$partido_nombre)
 
 ggplot(resultado_cera, aes(
@@ -238,6 +249,7 @@ ggplot(resultado_cera, aes(
 ## Ejemplo: evolución del voto CERA a lo largo del tiempo
 
 ``` r
+
 # Resúmenes CERA de todas las generales
 cera_historico <- get_cera_resumen(
   tipo_eleccion = "G",
@@ -267,6 +279,7 @@ evolucion_cera <- evolucion_cera |>
 ### Gráfico: evolución temporal
 
 ``` r
+
 ggplot(evolucion_cera, aes(x = fecha, y = tasa)) +
   geom_line(linewidth = 1, color = "#E30613") +
   geom_point(size = 3, color = "#E30613") +
@@ -311,10 +324,10 @@ descriptivas.
 [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md)
 acepta además `use_recode = TRUE`:
 
-| Parámetro     | Funciones                                                                                   | Descripción                                        |
-|---------------|---------------------------------------------------------------------------------------------|----------------------------------------------------|
-| `denormalize` | Ambas                                                                                       | Añade `eleccion_descripcion` y `territorio_nombre` |
-| `use_recode`  | [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md) | `partido_nombre` usa la agrupación del recode      |
+| Parámetro | Funciones | Descripción |
+|----|----|----|
+| `denormalize` | Ambas | Añade `eleccion_descripcion` y `territorio_nombre` |
+| `use_recode` | [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md) | `partido_nombre` usa la agrupación del recode |
 
 ------------------------------------------------------------------------
 

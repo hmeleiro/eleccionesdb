@@ -1,18 +1,28 @@
-# eleccionesdb: R Client for the EleccionesDB API
+# eleccionesdb: R Client for EleccionesDB Electoral Data
 
-Provides functions to access the EleccionesDB REST API for Spanish
-electoral data. Returns tidy tibbles ready for analysis, supports
-automatic pagination, and handles nested JSON structures with sensible
-flattening. Covers elections, territories, parties, results, and CERA
-(overseas vote) endpoints.
+Provides functions to access Spanish electoral data through the
+EleccionesDB REST API or an optional local SQLite snapshot. Returns tidy
+tibbles ready for analysis, supports automatic pagination, and handles
+nested JSON structures with sensible flattening. Covers elections,
+territories, parties, results, and CERA (overseas vote) endpoints.
 
-Provides functions to access the eleccionesdb REST API for Spanish
-electoral data. All functions return tidy tibbles ready for analysis
-with the tidyverse.
+Provides functions to access Spanish electoral data through the
+eleccionesdb REST API or an optional local SQLite snapshot. Query
+functions keep the same interface in both backends and return tidy
+tibbles ready for analysis.
 
 ## Details
 
 This is a package-level documentation file for eleccionesdb.
+
+## Backend de datos
+
+La API es el backend predeterminado. Descarga el snapshot local con
+[`edb_download_sqlite()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_download_sqlite.md)
+y actívalo para la sesión con `edb_set_backend("sqlite")`. Consulta
+[`vignette("backend-sqlite")`](https://hmeleiro.github.io/eleccionesdb-r/articles/backend-sqlite.md)
+para más detalles sobre actualizaciones, rutas personalizadas y
+fallback.
 
 ## Autenticación y configuración
 

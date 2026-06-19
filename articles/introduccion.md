@@ -12,6 +12,7 @@ inteligente.
 ## Instalación
 
 ``` r
+
 # Desde fuente local
 devtools::install_local("ruta/a/eleccionesdb")
 
@@ -24,6 +25,7 @@ devtools::install_local("ruta/a/eleccionesdb")
 Antes de empezar a trabajar, comprueba que la API está disponible:
 
 ``` r
+
 get_health()
 #> # A tibble: 1 × 3
 #>   status environment database
@@ -37,6 +39,7 @@ España celebra cinco tipos de procesos electorales. Puedes consultarlos
 con:
 
 ``` r
+
 get_tipos_eleccion()
 #> # A tibble: 5 × 2
 #>   codigo descripcion
@@ -51,6 +54,7 @@ get_tipos_eleccion()
 Para obtener el detalle de un tipo concreto:
 
 ``` r
+
 get_tipo_eleccion("G")
 #> # A tibble: 1 × 2
 #>   codigo descripcion
@@ -65,6 +69,7 @@ devuelve un listado paginado de elecciones. Puedes filtrar por tipo,
 año, mes y ámbito:
 
 ``` r
+
 # Todas las elecciones generales
 get_elecciones(tipo_eleccion = "G")
 #> # A tibble: 16 × 9
@@ -88,6 +93,7 @@ devuelve una fila con los datos completos de una elección, incluyendo el
 tipo expandido en columnas `tipo_codigo` y `tipo_descripcion`:
 
 ``` r
+
 get_eleccion(208)
 #> # A tibble: 1 × 10
 #>      id tipo_eleccion year  mes   dia   fecha      descripcion      ambito   slug
@@ -102,6 +108,7 @@ Todos los endpoints que devuelven listas soportan paginación con los
 parámetros `limit` (máximo 500) y `skip`:
 
 ``` r
+
 # Primeros 10 registros
 get_elecciones(limit = 10)
 
@@ -113,6 +120,7 @@ Para obtener **todos** los registros automáticamente (el paquete recorre
 todas las páginas por ti), usa `all_pages = TRUE`:
 
 ``` r
+
 todas <- get_elecciones(all_pages = TRUE)
 nrow(todas)
 #> [1] 254
@@ -121,6 +129,7 @@ nrow(todas)
 Cada tibble devuelta incluye atributos con los metadatos de paginación:
 
 ``` r
+
 tbl <- get_elecciones(tipo_eleccion = "G")
 attr(tbl, "edb_total")
 #> [1] 16
@@ -135,6 +144,7 @@ attr(tbl, "edb_limit")
 El paquete traduce los errores de la API en mensajes claros:
 
 ``` r
+
 # Recurso no encontrado (404)
 get_eleccion(99999)
 #> Error: API error (404): Elección no encontrada
@@ -159,6 +169,7 @@ Las funciones de resultados devuelven columnas de ID (`eleccion_id`,
 descriptivos sin necesidad de hacer joins, usa `denormalize = TRUE`:
 
 ``` r
+
 # Añade eleccion_descripcion, territorio_nombre y partido_nombre
 get_votos_partido(
   eleccion_id = 208,
@@ -171,6 +182,7 @@ Si además quieres que el nombre del partido sea el de su agrupación
 (recode), usa `use_recode = TRUE`:
 
 ``` r
+
 # partido_nombre = agrupación del recode (ej. "PSOE" en vez de "P.S.O.E.")
 get_votos_partido(
   eleccion_id = 208,

@@ -1,6 +1,7 @@
 # Análisis de resultados electorales
 
 ``` r
+
 library(eleccionesdb)
 library(dplyr)
 library(tidyr)
@@ -34,6 +35,7 @@ ningún `join` manual). Por defecto, `clean = TRUE` renombra las columnas
 y devuelve solo las más útiles para análisis.
 
 ``` r
+
 # Resultados provinciales de Andalucía — Elecciones Generales abril 2019
 andalucia <- get_resultados(
   tipo_eleccion = "G", year = "2019",
@@ -60,14 +62,15 @@ names(andalucia)
 Para los niveles más habituales existen funciones derivadas que evitan
 tener que escribir `tipo_territorio` cada vez:
 
-| Función               | Equivale a                                           |
-|-----------------------|------------------------------------------------------|
-| `get_ccaa(...)`       | `get_resultados(..., tipo_territorio = "ccaa")`      |
-| `get_provincia(...)`  | `get_resultados(..., tipo_territorio = "provincia")` |
+| Función | Equivale a |
+|----|----|
+| `get_ccaa(...)` | `get_resultados(..., tipo_territorio = "ccaa")` |
+| `get_provincia(...)` | `get_resultados(..., tipo_territorio = "provincia")` |
 | `get_municipios(...)` | `get_resultados(..., tipo_territorio = "municipio")` |
-| `get_secciones(...)`  | `get_resultados(..., tipo_territorio = "seccion")`   |
+| `get_secciones(...)` | `get_resultados(..., tipo_territorio = "seccion")` |
 
 ``` r
+
 # Equivalentes, misma salida:
 get_ccaa(tipo_eleccion = "G", year = "2019", all_pages = TRUE)
 
@@ -83,17 +86,18 @@ Para casos de uso más específicos (control fino de paginación, datos con
 IDs normalizados, joins con tablas propias), el paquete ofrece funciones
 de acceso a bajo nivel:
 
-| Función                                                                                                                       | Devuelve                                                                          |
-|-------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| [`get_totales_territorio_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio_eleccion.md) | Totales territoriales de una elección concreta                                    |
-| [`get_resultado_completo()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultado_completo.md)                   | Lista con `$totales_territorio` + `$votos_partido` para una elección y territorio |
-| [`get_totales_territorio()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio.md)                   | Totales territoriales filtrables (cruce de elecciones)                            |
-| [`get_votos_partido()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_votos_partido.md)                             | Votos por partido filtrables (cruce de elecciones)                                |
+| Función | Devuelve |
+|----|----|
+| [`get_totales_territorio_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio_eleccion.md) | Totales territoriales de una elección concreta |
+| [`get_resultado_completo()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultado_completo.md) | Lista con `$totales_territorio` + `$votos_partido` para una elección y territorio |
+| [`get_totales_territorio()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio.md) | Totales territoriales filtrables (cruce de elecciones) |
+| [`get_votos_partido()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_votos_partido.md) | Votos por partido filtrables (cruce de elecciones) |
 
 Estas funciones devuelven IDs normalizados. Usa `denormalize = TRUE`
 para añadir columnas descriptivas sin join manual:
 
 ``` r
+
 # Sin desnormalizar: solo IDs
 votos <- get_votos_partido(eleccion_id = 208, territorio_id = 20)
 votos
@@ -113,6 +117,7 @@ votos_dn <- get_votos_partido(
 ### Usar la agrupación (recode) como nombre del partido
 
 ``` r
+
 # partido_nombre usa la agrupación del recode
 votos_recode <- get_votos_partido(
   eleccion_id = 208,
@@ -144,6 +149,7 @@ votos_recode |>
 ### Comunidades autónomas
 
 ``` r
+
 # Resultados a nivel CCAA en las generales de abril 2019
 ccaa_2019 <- get_ccaa(tipo_eleccion = "G", year = "2019", all_pages = TRUE)
 
@@ -163,6 +169,7 @@ ccaa_2019 |>
 ### Provincias
 
 ``` r
+
 # Votos por partido en las provincias de Andalucía
 andalucia_prov <- get_provincia(
   tipo_eleccion = "G", year = "2019",
@@ -181,6 +188,7 @@ andalucia_prov |>
 ### Municipios
 
 ``` r
+
 # Resultados municipales en la provincia de Almería
 almeria_mun <- get_municipios(
   tipo_eleccion = "G", year = "2019",
@@ -198,6 +206,7 @@ almeria_mun |>
 ### Secciones censales
 
 ``` r
+
 # Datos por sección en un municipio (volumen alto: usar filtros siempre)
 madrid_sec <- get_secciones(
   tipo_eleccion = "G", year = "2019",
@@ -216,6 +225,7 @@ sola tabla lista para analizar con dplyr.
 ### Top 5 partidos por votos totales
 
 ``` r
+
 # Trabajamos con los datos de Andalucía provinciales ya cargados
 top5 <- andalucia_prov |>
   group_by(partido_recode) |>
@@ -238,6 +248,7 @@ Para obtener los colores del recode, podemos consultar la tabla de
 agrupaciones:
 
 ``` r
+
 recodes <- get_partidos_recode(all_pages = TRUE)
 colores <- recodes |>
   filter(agrupacion %in% top5$partido_recode) |>
@@ -247,6 +258,7 @@ colores <- recodes |>
 ### Gráfico de barras: votos por agrupación
 
 ``` r
+
 ggplot(top5, aes(x = reorder(partido_recode, total_votos), y = total_votos)) +
   geom_col(aes(fill = partido_recode)) +
   scale_fill_manual(values = colores) +
@@ -265,6 +277,7 @@ ggplot(top5, aes(x = reorder(partido_recode, total_votos), y = total_votos)) +
 ### Votos por partido y provincia
 
 ``` r
+
 # Desglose de los 5 principales partidos por provincia
 por_provincia <- andalucia_prov |>
   filter(partido_recode %in% top5$partido_recode) |>
@@ -281,6 +294,7 @@ por_provincia |>
 ### Gráfico: distribución provincial
 
 ``` r
+
 ggplot(
   por_provincia,
   aes(x = territorio_nombre, y = votos, fill = partido_recode)
@@ -308,6 +322,7 @@ o `get_provincia()`, los datos de censo y participación ya están
 incluidos en la misma tabla, por lo que no hace falta un join manual:
 
 ``` r
+
 # Resultados a nivel CCAA para todas las generales
 # (censo_ine y votos_validos ya incluidos en la misma tabla)
 ccaa_generales <- get_ccaa(tipo_eleccion = "G", all_pages = TRUE)
@@ -321,6 +336,7 @@ participacion <- ccaa_generales |>
 ### Gráfico: evolución de la participación
 
 ``` r
+
 # Participación media nacional por elección
 media_nacional <- participacion |>
   group_by(year) |>
@@ -348,6 +364,7 @@ se obtienen votos y metadatos de elección en la misma tabla, por lo que
 el análisis temporal no requiere joins:
 
 ``` r
+
 # Total nacional por agrupación y año en elecciones generales
 evolucion <- get_provincia(tipo_eleccion = "G", all_pages = TRUE) |>
   filter(!is.na(partido_recode)) |>
@@ -358,6 +375,7 @@ evolucion <- get_provincia(tipo_eleccion = "G", all_pages = TRUE) |>
 ### Gráfico: evolución temporal de los principales partidos
 
 ``` r
+
 # Seleccionar las 4 agrupaciones con más votos históricos
 top_agrupaciones <- evolucion |>
   group_by(partido_recode) |>
@@ -392,6 +410,7 @@ evolucion |>
 ## 5. Mapa de calor: representantes por provincia
 
 ``` r
+
 # Representantes por provincia y agrupación en las generales 28-A 2019
 representantes <- get_provincia(
   tipo_eleccion = "G", year = "2019",
