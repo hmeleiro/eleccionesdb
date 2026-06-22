@@ -295,7 +295,7 @@ clean_combinados_tbl <- function(tbl) {
     keep_ordered <- c(
         "year", "mes", "tipo_eleccion",
         "tipo_territorio", "territorio_nombre",
-        "codigo_ccaa", "codigo_provincia",
+        "codigo_ccaa", "codigo_provincia", "codigo_circunscripcion",
         "codigo_municipio", "codigo_distrito", "codigo_seccion",
         "censo_ine", "votos_validos", "abstenciones",
         "votos_blancos", "votos_nulos",

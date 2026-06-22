@@ -121,6 +121,7 @@ test_that("get_ccaa passes tipo_territorio = 'ccaa' to get_resultados", {
     })
     tbl <- get_ccaa(eleccion_id = 208)
     expect_s3_class(tbl, "tbl_df")
+    expect_equal(tbl$codigo_circunscripcion, "04")
 })
 
 test_that("get_provincias passes tipo_territorio = 'provincia' to get_resultados", {
@@ -130,6 +131,7 @@ test_that("get_provincias passes tipo_territorio = 'provincia' to get_resultados
     })
     tbl <- get_provincias(eleccion_id = 208)
     expect_s3_class(tbl, "tbl_df")
+    expect_equal(tbl$codigo_circunscripcion, "04")
 })
 
 test_that("get_municipios passes tipo_territorio = 'municipio' to get_resultados", {
@@ -139,6 +141,7 @@ test_that("get_municipios passes tipo_territorio = 'municipio' to get_resultados
     })
     tbl <- get_municipios(eleccion_id = 208)
     expect_s3_class(tbl, "tbl_df")
+    expect_equal(tbl$codigo_circunscripcion, "04")
 })
 
 test_that("get_secciones passes tipo_territorio = 'seccion' to get_resultados", {
@@ -148,6 +151,7 @@ test_that("get_secciones passes tipo_territorio = 'seccion' to get_resultados", 
     })
     tbl <- get_secciones(eleccion_id = 208)
     expect_s3_class(tbl, "tbl_df")
+    expect_equal(tbl$codigo_circunscripcion, "04")
 })
 
 

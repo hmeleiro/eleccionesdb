@@ -67,8 +67,9 @@ for this call only.}
 \value{
 A tibble. When \code{clean = TRUE}:
 \code{year}, \code{mes}, \code{tipo_eleccion}, \code{tipo_territorio}, \code{territorio_nombre},
-\code{codigo_ccaa}, \code{codigo_provincia}, \code{codigo_municipio}, \code{codigo_distrito},
-\code{codigo_seccion}, \code{censo_ine}, \code{votos_validos}, \code{abstenciones},
+\code{codigo_ccaa}, \code{codigo_provincia}, \code{codigo_circunscripcion},
+\code{codigo_municipio}, \code{codigo_distrito}, \code{codigo_seccion}, \code{censo_ine},
+\code{votos_validos}, \code{abstenciones},
 \code{votos_blancos}, \code{votos_nulos}, \code{participacion_1}, \code{participacion_2},
 \code{participacion_3}, \code{siglas}, \code{denominacion}, \code{partido_recode},
 \code{partido_agrupacion}, \code{votos}, \code{representantes}, \code{nrepresentantes}.

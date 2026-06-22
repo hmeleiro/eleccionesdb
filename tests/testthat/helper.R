@@ -198,7 +198,8 @@ fixture_combinados_pag <- list(
             territorio = list(
                 id = 20L, tipo = "provincia", nombre = "Almeria",
                 codigo_completo = "0104999999999",
-                codigo_ccaa = "01", codigo_provincia = "04"
+                codigo_ccaa = "01", codigo_provincia = "04",
+                codigo_circunscripcion = "04"
             ),
             eleccion = list(
                 id = 208L, tipo_eleccion = "G", year = "2019",
