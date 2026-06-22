@@ -1,6 +1,12 @@
 test_that("get_totales_territorio_eleccion returns paginated tibble", {
-    local_mocked_bindings(edb_get = function(...) fixture_resumen_pag)
-    tbl <- get_totales_territorio_eleccion(208, tipo_territorio = "provincia")
+    local_mocked_bindings(edb_get = function(path, ...) {
+        params <- list(...)
+        expect_equal(params$codigo_circunscripcion, "99")
+        fixture_resumen_pag
+    })
+    tbl <- get_totales_territorio_eleccion(
+        208, tipo_territorio = "provincia", codigo_circunscripcion = "99"
+    )
     expect_s3_class(tbl, "tbl_df")
     expect_equal(nrow(tbl), 2)
     expect_true("censo_ine" %in% names(tbl))
@@ -27,15 +33,27 @@ test_that("get_resultado_completo returns list with totales_territorio and votos
 })
 
 test_that("get_totales_territorio returns paginated tibble", {
-    local_mocked_bindings(edb_post = function(...) fixture_resumen_pag)
-    tbl <- get_totales_territorio(eleccion_id = 208, tipo_territorio = "provincia")
+    local_mocked_bindings(edb_post = function(path, body, ...) {
+        expect_equal(body$codigo_circunscripcion, list("99", "331"))
+        fixture_resumen_pag
+    })
+    tbl <- get_totales_territorio(
+        eleccion_id = 208, tipo_territorio = "provincia",
+        codigo_circunscripcion = c("99", "331")
+    )
     expect_s3_class(tbl, "tbl_df")
     expect_equal(nrow(tbl), 2)
 })
 
 test_that("get_votos_partido returns paginated tibble", {
-    local_mocked_bindings(edb_post = function(...) fixture_votos_pag)
-    tbl <- get_votos_partido(eleccion_id = 208, territorio_id = 20)
+    local_mocked_bindings(edb_post = function(path, body, ...) {
+        expect_equal(body$codigo_circunscripcion, list("041"))
+        fixture_votos_pag
+    })
+    tbl <- get_votos_partido(
+        eleccion_id = 208, territorio_id = 20,
+        codigo_circunscripcion = "041"
+    )
     expect_s3_class(tbl, "tbl_df")
     expect_equal(nrow(tbl), 2)
     expect_true("votos" %in% names(tbl))
@@ -55,6 +73,7 @@ test_that("get_resultados returns clean tibble by default", {
     expect_true("siglas" %in% names(tbl))
     expect_true("partido_recode" %in% names(tbl))
     expect_true("territorio_nombre" %in% names(tbl))
+    expect_equal(tbl$codigo_circunscripcion, "99")
     expect_true("year" %in% names(tbl))
     expect_true("votos" %in% names(tbl))
     expect_true("representantes" %in% names(tbl))
@@ -88,6 +107,7 @@ test_that("get_resultados with clean = FALSE returns full flattened tibble with 
     expect_true("partido_siglas" %in% names(tbl))
     expect_true("recode_agrupacion" %in% names(tbl))
     expect_true("territorio_nombre" %in% names(tbl))
+    expect_equal(tbl$territorio_codigo_circunscripcion, "99")
     expect_true("eleccion_year" %in% names(tbl))
 
     # Verify enriched summary columns also present
@@ -114,44 +134,34 @@ test_that("get_resultados gracefully handles failed resumen fetch", {
     expect_true(is.na(tbl$censo_ine[1]))
 })
 
-test_that("get_ccaa passes tipo_territorio = 'ccaa' to get_resultados", {
-    local_mocked_bindings(edb_post = function(path, body, ...) {
-        if (grepl("combinados", path)) fixture_combinados_pag
-        else fixture_resumen_pag
-    })
-    tbl <- get_ccaa(eleccion_id = 208)
-    expect_s3_class(tbl, "tbl_df")
-    expect_equal(tbl$codigo_circunscripcion, "04")
-})
+test_that("territorial wrappers return and filter by codigo_circunscripcion", {
+    cases <- list(
+        list(fn = get_ccaa, tipo = "ccaa", codigo = "99"),
+        list(fn = get_provincias, tipo = "provincia", codigo = "99"),
+        list(fn = get_circunscripciones, tipo = "circunscripcion", codigo = "041"),
+        list(fn = get_municipios, tipo = "municipio", codigo = "041"),
+        list(fn = get_secciones, tipo = "seccion", codigo = "041")
+    )
 
-test_that("get_provincias passes tipo_territorio = 'provincia' to get_resultados", {
-    local_mocked_bindings(edb_post = function(path, body, ...) {
-        if (grepl("combinados", path)) fixture_combinados_pag
-        else fixture_resumen_pag
-    })
-    tbl <- get_provincias(eleccion_id = 208)
-    expect_s3_class(tbl, "tbl_df")
-    expect_equal(tbl$codigo_circunscripcion, "04")
-})
-
-test_that("get_municipios passes tipo_territorio = 'municipio' to get_resultados", {
-    local_mocked_bindings(edb_post = function(path, body, ...) {
-        if (grepl("combinados", path)) fixture_combinados_pag
-        else fixture_resumen_pag
-    })
-    tbl <- get_municipios(eleccion_id = 208)
-    expect_s3_class(tbl, "tbl_df")
-    expect_equal(tbl$codigo_circunscripcion, "04")
-})
-
-test_that("get_secciones passes tipo_territorio = 'seccion' to get_resultados", {
-    local_mocked_bindings(edb_post = function(path, body, ...) {
-        if (grepl("combinados", path)) fixture_combinados_pag
-        else fixture_resumen_pag
-    })
-    tbl <- get_secciones(eleccion_id = 208)
-    expect_s3_class(tbl, "tbl_df")
-    expect_equal(tbl$codigo_circunscripcion, "04")
+    for (case in cases) {
+        combined <- fixture_combinados_territorio(case$tipo, case$codigo)
+        local_mocked_bindings(edb_post = function(path, body, ...) {
+            if (grepl("combinados", path)) {
+                expect_equal(body$tipo_territorio, list(case$tipo))
+                expect_equal(body$codigo_circunscripcion, list(case$codigo))
+                combined
+            } else {
+                fixture_resumen_pag
+            }
+        })
+        tbl <- case$fn(
+            eleccion_id = 208,
+            codigo_circunscripcion = case$codigo,
+            all_pages = FALSE
+        )
+        expect_s3_class(tbl, "tbl_df")
+        expect_equal(tbl$codigo_circunscripcion, case$codigo)
+    }
 })
 
 

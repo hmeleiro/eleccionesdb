@@ -13,6 +13,8 @@
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
 #' @param limit Integer. Maximum records per page (1-500, default 50).
@@ -51,6 +53,7 @@ get_totales_territorio_eleccion <- function(eleccion_id,
                                             codigo_ccaa = NULL,
                                             codigo_provincia = NULL,
                                             codigo_municipio = NULL,
+                                            codigo_circunscripcion = NULL,
                                             ...,
                                             territorio_id = NULL,
                                             limit = 50L, skip = 0L,
@@ -64,7 +67,8 @@ get_totales_territorio_eleccion <- function(eleccion_id,
         tipo_territorio = tipo_territorio,
         codigo_ccaa = codigo_ccaa,
         codigo_provincia = codigo_provincia,
-        codigo_municipio = codigo_municipio
+        codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion
     )
     if (edb_backend_is_sqlite()) {
         tbl <- sqlite_get_totales(
@@ -72,6 +76,7 @@ get_totales_territorio_eleccion <- function(eleccion_id,
             tipo_territorio = tipo_territorio, codigo_ccaa = codigo_ccaa,
             codigo_provincia = codigo_provincia,
             codigo_municipio = codigo_municipio,
+            codigo_circunscripcion = codigo_circunscripcion,
             limit = limit, skip = skip, all_pages = all_pages
         )
     } else {
@@ -204,6 +209,8 @@ get_resultado_completo <- function(eleccion_id, territorio_id, ...,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -243,6 +250,7 @@ get_totales_territorio <- function(year = NULL, tipo_eleccion = NULL,
                                    tipo_territorio = NULL, codigo_ccaa = NULL,
                                    codigo_provincia = NULL,
                                    codigo_municipio = NULL,
+                                   codigo_circunscripcion = NULL,
                                    ...,
                                    eleccion_id = NULL, territorio_id = NULL,
                                    limit = 50L, skip = 0L, all_pages = FALSE,
@@ -254,7 +262,7 @@ get_totales_territorio <- function(year = NULL, tipo_eleccion = NULL,
         tbl <- sqlite_get_totales(
             eleccion_id, territorio_id, year, tipo_eleccion, tipo_territorio,
             codigo_ccaa, codigo_provincia, codigo_municipio,
-            limit, skip, all_pages
+            codigo_circunscripcion, limit, skip, all_pages
         )
     } else {
         filters <- Filter(Negate(is.null), list(
@@ -265,7 +273,8 @@ get_totales_territorio <- function(year = NULL, tipo_eleccion = NULL,
             tipo_territorio = to_json_str_array(tipo_territorio),
             codigo_ccaa    = to_json_str_array(codigo_ccaa),
             codigo_provincia = to_json_str_array(codigo_provincia),
-            codigo_municipio = to_json_str_array(codigo_municipio)
+            codigo_municipio = to_json_str_array(codigo_municipio),
+            codigo_circunscripcion = to_json_str_array(codigo_circunscripcion)
         ))
         tbl <- edb_paginated_post(
             path = "/v1/resultados/totales-territorio",
@@ -302,6 +311,8 @@ get_totales_territorio <- function(year = NULL, tipo_eleccion = NULL,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -344,6 +355,7 @@ get_votos_partido <- function(year = NULL, tipo_eleccion = NULL,
                               tipo_territorio = NULL, codigo_ccaa = NULL,
                               codigo_provincia = NULL,
                               codigo_municipio = NULL,
+                              codigo_circunscripcion = NULL,
                               ...,
                               eleccion_id = NULL, territorio_id = NULL,
                               partido_id = NULL,
@@ -356,7 +368,7 @@ get_votos_partido <- function(year = NULL, tipo_eleccion = NULL,
         tbl <- sqlite_get_votos(
             eleccion_id, territorio_id, partido_id, year, tipo_eleccion,
             tipo_territorio, codigo_ccaa, codigo_provincia, codigo_municipio,
-            limit, skip, all_pages
+            codigo_circunscripcion, limit, skip, all_pages
         )
     } else {
         filters <- Filter(Negate(is.null), list(
@@ -368,7 +380,8 @@ get_votos_partido <- function(year = NULL, tipo_eleccion = NULL,
             tipo_territorio = to_json_str_array(tipo_territorio),
             codigo_ccaa    = to_json_str_array(codigo_ccaa),
             codigo_provincia = to_json_str_array(codigo_provincia),
-            codigo_municipio = to_json_str_array(codigo_municipio)
+            codigo_municipio = to_json_str_array(codigo_municipio),
+            codigo_circunscripcion = to_json_str_array(codigo_circunscripcion)
         ))
         tbl <- edb_paginated_post(
             path = "/v1/resultados/votos-partido",
@@ -420,6 +433,8 @@ get_votos_partido <- function(year = NULL, tipo_eleccion = NULL,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -480,6 +495,7 @@ get_resultados <- function(year = NULL, tipo_eleccion = NULL,
                            codigo_ccaa = NULL,
                            codigo_provincia = NULL,
                            codigo_municipio = NULL,
+                           codigo_circunscripcion = NULL,
                            ...,
                            eleccion_id = NULL, territorio_id = NULL,
                            partido_id = NULL,
@@ -491,7 +507,7 @@ get_resultados <- function(year = NULL, tipo_eleccion = NULL,
         tbl <- sqlite_get_resultados(
             eleccion_id, territorio_id, partido_id, year, tipo_eleccion,
             tipo_territorio, codigo_ccaa, codigo_provincia, codigo_municipio,
-            limit, skip, all_pages
+            codigo_circunscripcion, limit, skip, all_pages
         )
     } else {
         filters <- Filter(Negate(is.null), list(
@@ -503,7 +519,8 @@ get_resultados <- function(year = NULL, tipo_eleccion = NULL,
             tipo_territorio = to_json_str_array(tipo_territorio),
             codigo_ccaa    = to_json_str_array(codigo_ccaa),
             codigo_provincia = to_json_str_array(codigo_provincia),
-            codigo_municipio = to_json_str_array(codigo_municipio)
+            codigo_municipio = to_json_str_array(codigo_municipio),
+            codigo_circunscripcion = to_json_str_array(codigo_circunscripcion)
         ))
         tbl <- edb_paginated_post(
             path = "/v1/resultados/combinados",
@@ -540,6 +557,8 @@ get_resultados <- function(year = NULL, tipo_eleccion = NULL,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -570,6 +589,7 @@ get_resultados <- function(year = NULL, tipo_eleccion = NULL,
 get_ccaa <- function(year = NULL, tipo_eleccion = NULL,
                      codigo_ccaa = NULL, codigo_provincia = NULL,
                      codigo_municipio = NULL,
+                     codigo_circunscripcion = NULL,
                      ...,
                      eleccion_id = NULL, territorio_id = NULL,
                      partido_id = NULL,
@@ -581,6 +601,7 @@ get_ccaa <- function(year = NULL, tipo_eleccion = NULL,
         codigo_ccaa = codigo_ccaa,
         codigo_provincia = codigo_provincia,
         codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion,
         ...,
         eleccion_id = eleccion_id, territorio_id = territorio_id,
         partido_id = partido_id,
@@ -605,6 +626,8 @@ get_ccaa <- function(year = NULL, tipo_eleccion = NULL,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -636,6 +659,7 @@ get_ccaa <- function(year = NULL, tipo_eleccion = NULL,
 get_provincias <- function(year = NULL, tipo_eleccion = NULL,
                            codigo_ccaa = NULL, codigo_provincia = NULL,
                            codigo_municipio = NULL,
+                           codigo_circunscripcion = NULL,
                            ...,
                            eleccion_id = NULL, territorio_id = NULL,
                            partido_id = NULL,
@@ -647,6 +671,50 @@ get_provincias <- function(year = NULL, tipo_eleccion = NULL,
         codigo_ccaa = codigo_ccaa,
         codigo_provincia = codigo_provincia,
         codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion,
+        ...,
+        eleccion_id = eleccion_id, territorio_id = territorio_id,
+        partido_id = partido_id,
+        limit = limit, skip = skip, all_pages = all_pages,
+        clean = clean, api_key = api_key
+    )
+}
+
+#' Results by constituency
+#'
+#' A convenience wrapper around [get_resultados()] that pre-sets
+#' `tipo_territorio = "circunscripcion"`. See [get_resultados()] for full
+#' details on the returned tibble.
+#'
+#' @inheritParams get_provincias
+#' @return A tibble as returned by [get_resultados()] filtered to
+#'   `tipo_territorio = "circunscripcion"`.
+#' @export
+#' @examples
+#' \dontrun{
+#' # Constituency-level results for regional elections
+#' get_circunscripciones(
+#'     tipo_eleccion = "A", codigo_circunscripcion = "331",
+#'     all_pages = TRUE
+#' )
+#' }
+get_circunscripciones <- function(year = NULL, tipo_eleccion = NULL,
+                                  codigo_ccaa = NULL,
+                                  codigo_provincia = NULL,
+                                  codigo_municipio = NULL,
+                                  codigo_circunscripcion = NULL,
+                                  ...,
+                                  eleccion_id = NULL, territorio_id = NULL,
+                                  partido_id = NULL,
+                                  limit = 50L, skip = 0L, all_pages = TRUE,
+                                  clean = TRUE, api_key = NULL) {
+    get_resultados(
+        year = year, tipo_eleccion = tipo_eleccion,
+        tipo_territorio = "circunscripcion",
+        codigo_ccaa = codigo_ccaa,
+        codigo_provincia = codigo_provincia,
+        codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion,
         ...,
         eleccion_id = eleccion_id, territorio_id = territorio_id,
         partido_id = partido_id,
@@ -671,6 +739,8 @@ get_provincias <- function(year = NULL, tipo_eleccion = NULL,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -696,6 +766,7 @@ get_provincias <- function(year = NULL, tipo_eleccion = NULL,
 get_municipios <- function(year = NULL, tipo_eleccion = NULL,
                            codigo_ccaa = NULL, codigo_provincia = NULL,
                            codigo_municipio = NULL,
+                           codigo_circunscripcion = NULL,
                            ...,
                            eleccion_id = NULL, territorio_id = NULL,
                            partido_id = NULL,
@@ -707,6 +778,7 @@ get_municipios <- function(year = NULL, tipo_eleccion = NULL,
         codigo_ccaa = codigo_ccaa,
         codigo_provincia = codigo_provincia,
         codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion,
         ...,
         eleccion_id = eleccion_id, territorio_id = territorio_id,
         partido_id = partido_id,
@@ -735,6 +807,8 @@ get_municipios <- function(year = NULL, tipo_eleccion = NULL,
 #'   (e.g. `"28"`, `"08"`). Optional.
 #' @param codigo_municipio Character vector. Filter by municipality INE
 #'   code(s). Optional.
+#' @param codigo_circunscripcion Character vector. Filter by constituency
+#'   code(s), including `"99"` for CCAA and provinces. Optional.
 #' @param ... Arguments after `...` must be named.
 #' @param eleccion_id Integer vector. Filter by election ID(s). Optional.
 #' @param territorio_id Integer vector. Filter by territory ID(s). Optional.
@@ -760,6 +834,7 @@ get_municipios <- function(year = NULL, tipo_eleccion = NULL,
 get_secciones <- function(year = NULL, tipo_eleccion = NULL,
                           codigo_ccaa = NULL, codigo_provincia = NULL,
                           codigo_municipio = NULL,
+                          codigo_circunscripcion = NULL,
                           ...,
                           eleccion_id = NULL, territorio_id = NULL,
                           partido_id = NULL,
@@ -771,6 +846,7 @@ get_secciones <- function(year = NULL, tipo_eleccion = NULL,
         codigo_ccaa = codigo_ccaa,
         codigo_provincia = codigo_provincia,
         codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion,
         ...,
         eleccion_id = eleccion_id, territorio_id = territorio_id,
         partido_id = partido_id,

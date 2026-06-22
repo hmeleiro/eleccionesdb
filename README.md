@@ -138,6 +138,9 @@ personalizadas, validación y política de fallback.
 | `get_totales_territorio(...)` | Territorial totals (cross-election) |
 | `get_votos_partido(...)` | Per-party votes (cross-election) |
 | `get_resultados(...)` | Fully expanded results (best for analysis) |
+| `get_ccaa(...)`, `get_provincias(...)` | Results by CCAA or province |
+| `get_circunscripciones(...)` | Results by constituency |
+| `get_municipios(...)`, `get_secciones(...)` | Results by municipality or section |
 
 ### CERA (overseas vote)
 

@@ -40,7 +40,8 @@ Devuelve un tibble ancho que combina en una sola tabla:
   `participacion_3`, `nrepresentantes`
 - **Metadatos de elección y territorio**: `year`, `mes`, `tipo_eleccion`,
   `tipo_territorio`, `territorio_nombre`, `codigo_ccaa`, `codigo_provincia`,
-  `codigo_municipio`, `codigo_distrito`, `codigo_seccion`
+  `codigo_circunscripcion`, `codigo_municipio`, `codigo_distrito`,
+  `codigo_seccion`
 
 La unión de votos y totales se realiza internamente (no hace falta ningún
 `join` manual). Por defecto, `clean = TRUE` renombra las columnas y devuelve
@@ -55,17 +56,17 @@ andalucia <- get_resultados(
   all_pages = TRUE
 )
 
-# Las 25 columnas listas para usar directamente:
+# Las 26 columnas listas para usar directamente:
 names(andalucia)
 #>  [1] "year"              "mes"               "tipo_eleccion"
 #>  [4] "tipo_territorio"   "territorio_nombre" "codigo_ccaa"
-#>  [7] "codigo_provincia"  "codigo_municipio"  "codigo_distrito"
-#> [10] "codigo_seccion"    "censo_ine"         "votos_validos"
-#> [13] "abstenciones"      "votos_blancos"     "votos_nulos"
-#> [16] "participacion_1"   "participacion_2"   "participacion_3"
-#> [19] "siglas"            "denominacion"      "partido_recode"
-#> [22] "partido_agrupacion" "votos"            "representantes"
-#> [25] "nrepresentantes"
+#>  [7] "codigo_provincia"  "codigo_circunscripcion" "codigo_municipio"
+#> [10] "codigo_distrito"   "codigo_seccion"    "censo_ine"
+#> [13] "votos_validos"     "abstenciones"      "votos_blancos"
+#> [16] "votos_nulos"       "participacion_1"   "participacion_2"
+#> [19] "participacion_3"   "siglas"            "denominacion"
+#> [22] "partido_recode"    "partido_agrupacion" "votos"
+#> [25] "representantes"    "nrepresentantes"
 ```
 
 ### Atajos territoriales
@@ -76,7 +77,8 @@ tener que escribir `tipo_territorio` cada vez:
 | Función | Equivale a |
 |---|---|
 | `get_ccaa(...)` | `get_resultados(..., tipo_territorio = "ccaa")` |
-| `get_provincia(...)` | `get_resultados(..., tipo_territorio = "provincia")` |
+| `get_provincias(...)` | `get_resultados(..., tipo_territorio = "provincia")` |
+| `get_circunscripciones(...)` | `get_resultados(..., tipo_territorio = "circunscripcion")` |
 | `get_municipios(...)` | `get_resultados(..., tipo_territorio = "municipio")` |
 | `get_secciones(...)` | `get_resultados(..., tipo_territorio = "seccion")` |
 

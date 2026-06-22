@@ -26,6 +26,7 @@ test_that("SQLite serves master-data functions with pagination", {
 
     territorios <- get_territorios(tipo = "provincia", all_pages = TRUE)
     expect_equal(territorios$nombre, "Almeria")
+    expect_equal(territorios$codigo_circunscripcion, "99")
     expect_equal(attr(territorios, "edb_total"), 1L)
     expect_equal(get_territorio_hijos(1, all_pages = TRUE)$id, c(20L, 21L))
 
@@ -40,6 +41,7 @@ test_that("SQLite filters and denormalizes result tables", {
 
     totales <- get_totales_territorio(
         year = "2019", tipo_territorio = "provincia",
+        codigo_circunscripcion = "99",
         denormalize = TRUE, clean = FALSE
     )
     expect_equal(nrow(totales), 1L)
@@ -48,10 +50,17 @@ test_that("SQLite filters and denormalizes result tables", {
 
     votos <- get_votos_partido(
         eleccion_id = 208, territorio_id = 20,
+        codigo_circunscripcion = "99",
         denormalize = TRUE, use_recode = TRUE, all_pages = TRUE
     )
     expect_equal(nrow(votos), 2L)
     expect_setequal(votos$partido_nombre, c("PP", "PSOE"))
+
+    totales_eleccion <- get_totales_territorio_eleccion(
+        208, tipo_territorio = "provincia",
+        codigo_circunscripcion = "99", all_pages = TRUE
+    )
+    expect_equal(totales_eleccion$territorio_id, 20L)
 
     completo <- get_resultado_completo(208, 20)
     expect_equal(nrow(completo$totales_territorio), 1L)
@@ -63,14 +72,38 @@ test_that("SQLite builds clean combined results and CERA results", {
     local_sqlite_backend()
 
     resultados <- get_resultados(
-        year = "2019", tipo_territorio = "provincia", all_pages = TRUE
+        year = "2019", tipo_territorio = "provincia",
+        codigo_circunscripcion = "99", all_pages = TRUE
     )
     expect_equal(nrow(resultados), 2L)
     expect_true(all(c("territorio_nombre", "siglas", "censo_ine") %in% names(resultados)))
     expect_setequal(resultados$siglas, c("PP", "PSOE"))
+    expect_equal(unique(resultados$codigo_circunscripcion), "99")
 
     expect_equal(nrow(get_cera_resumen(year = "2019")), 1L)
     expect_equal(get_cera_votos(year = "2019")$votos, 2500L)
+})
+
+test_that("SQLite serves all territorial result wrappers", {
+    local_sqlite_backend()
+
+    cases <- list(
+        list(fn = get_ccaa, codigo = "99"),
+        list(fn = get_provincias, codigo = "99"),
+        list(fn = get_circunscripciones, codigo = "041"),
+        list(fn = get_municipios, codigo = "041"),
+        list(fn = get_secciones, codigo = "041")
+    )
+
+    for (case in cases) {
+        tbl <- case$fn(
+            year = "2019",
+            codigo_circunscripcion = case$codigo,
+            all_pages = TRUE
+        )
+        expect_gt(nrow(tbl), 0L)
+        expect_equal(unique(tbl$codigo_circunscripcion), case$codigo)
+    }
 })
 
 test_that("get_health warns before falling back to the API", {

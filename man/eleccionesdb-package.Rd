@@ -69,6 +69,7 @@ La URL base de la API se puede configurar con:
 \item \code{\link[=get_totales_territorio]{get_totales_territorio()}} — territorial totals (cross-election)
 \item \code{\link[=get_votos_partido]{get_votos_partido()}} — per-party votes (cross-election)
 \item \code{\link[=get_resultados]{get_resultados()}} — fully expanded votes (best for analysis)
+\item \code{\link[=get_circunscripciones]{get_circunscripciones()}} — constituency-level expanded results
 }
 
 \strong{CERA (overseas vote):}

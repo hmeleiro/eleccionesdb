@@ -10,6 +10,7 @@ get_municipios(
   codigo_ccaa = NULL,
   codigo_provincia = NULL,
   codigo_municipio = NULL,
+  codigo_circunscripcion = NULL,
   ...,
   eleccion_id = NULL,
   territorio_id = NULL,
@@ -36,6 +37,9 @@ code(s) (e.g. \code{"01"}, \code{"13"}). Optional.}
 
 \item{codigo_municipio}{Character vector. Filter by municipality INE
 code(s). Optional.}
+
+\item{codigo_circunscripcion}{Character vector. Filter by constituency
+code(s), including \code{"99"} for CCAA and provinces. Optional.}
 
 \item{...}{Arguments after \code{...} must be named.}
 

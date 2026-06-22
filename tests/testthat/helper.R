@@ -68,7 +68,7 @@ fixture_territorios_pag <- list(
 fixture_territorio_detail <- list(
     id = 1L, tipo = "ccaa", codigo_ccaa = "01", codigo_provincia = "99",
     codigo_municipio = "999", codigo_distrito = "99", codigo_seccion = "9999",
-    codigo_circunscripcion = NULL, nombre = "Andalucia",
+    codigo_circunscripcion = "99", nombre = "Andalucia",
     codigo_completo = "0199999999999", parent_id = NULL
 )
 
@@ -199,7 +199,7 @@ fixture_combinados_pag <- list(
                 id = 20L, tipo = "provincia", nombre = "Almeria",
                 codigo_completo = "0104999999999",
                 codigo_ccaa = "01", codigo_provincia = "04",
-                codigo_circunscripcion = "04"
+                codigo_circunscripcion = "99"
             ),
             eleccion = list(
                 id = 208L, tipo_eleccion = "G", year = "2019",
@@ -210,6 +210,13 @@ fixture_combinados_pag <- list(
         )
     )
 )
+
+fixture_combinados_territorio <- function(tipo, codigo_circunscripcion) {
+    fixture <- fixture_combinados_pag
+    fixture$data[[1]]$territorio$tipo <- tipo
+    fixture$data[[1]]$territorio$codigo_circunscripcion <- codigo_circunscripcion
+    fixture
+}
 
 # Helper: mock edb_get to return a fixture
 local_mock_edb_get <- function(fixture, env = parent.frame()) {

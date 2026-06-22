@@ -51,16 +51,25 @@ create_test_sqlite <- function(path = tempfile(fileext = ".sqlite")) {
         slug = "elecciones-generales-2019"
     ), append = TRUE)
     DBI::dbWriteTable(con, "territorios", data.frame(
-        id = c(1L, 20L, 21L), tipo = c("ccaa", "provincia", "cera"),
-        codigo_ccaa = c("01", "01", "01"),
-        codigo_provincia = c("99", "04", "99"),
-        codigo_municipio = c("999", "999", "999"),
-        codigo_distrito = c("99", "99", "99"),
-        codigo_seccion = c("9999", "9999", "9999"),
-        codigo_circunscripcion = c(NA, NA, "001"),
-        nombre = c("Andalucia", "Almeria", "CERA Andalucia"),
-        codigo_completo = c("0199999999999", "0104999999999", "0199999999001"),
-        parent_id = c(NA, 1L, 1L)
+        id = c(1L, 20L, 21L, 22L, 23L, 24L),
+        tipo = c(
+            "ccaa", "provincia", "cera", "circunscripcion", "municipio", "seccion"
+        ),
+        codigo_ccaa = rep("01", 6),
+        codigo_provincia = c("99", "04", "99", "04", "04", "04"),
+        codigo_municipio = c("999", "999", "999", "999", "001", "001"),
+        codigo_distrito = c("99", "99", "99", "99", "99", "01"),
+        codigo_seccion = c("9999", "9999", "9999", "9999", "9999", "0001"),
+        codigo_circunscripcion = c("99", "99", "001", "041", "041", "041"),
+        nombre = c(
+            "Andalucia", "Almeria", "CERA Andalucia",
+            "Circunscripcion Almeria", "Abla", "Abla distrito 1 seccion 1"
+        ),
+        codigo_completo = c(
+            "0199999999999", "0104999999999", "0199999999001",
+            "0104999999999", "0104001999999", "0104001010001"
+        ),
+        parent_id = c(NA, 1L, 1L, 20L, 20L, 23L)
     ), append = TRUE)
     DBI::dbWriteTable(con, "partidos_recode", data.frame(
         id = c(73L, 80L), partido_recode = c("PP", "PSOE"),
@@ -72,17 +81,24 @@ create_test_sqlite <- function(path = tempfile(fileext = ".sqlite")) {
         denominacion = c("PARTIDO POPULAR", "PARTIDO SOCIALISTA OBRERO ESPANOL")
     ), append = TRUE)
     DBI::dbWriteTable(con, "resumen_territorial", data.frame(
-        id = c(408788L, 408789L), eleccion_id = c(208L, 208L),
-        territorio_id = c(20L, 21L), censo_ine = c(500556L, 5000L),
-        participacion_1 = c(182762L, 1000L), participacion_2 = c(259071L, 2000L),
-        participacion_3 = c(NA, NA), votos_validos = c(328097L, 3000L),
-        abstenciones = c(169541L, 2000L), votos_blancos = c(2283L, 20L),
-        votos_nulos = c(2918L, 30L), nrepresentantes = c(6L, 0L)
+        id = 408788:408793, eleccion_id = rep(208L, 6),
+        territorio_id = c(20L, 21L, 1L, 22L, 23L, 24L),
+        censo_ine = c(500556L, 5000L, 1000000L, 250000L, 1000L, 800L),
+        participacion_1 = c(182762L, 1000L, 400000L, 90000L, 400L, 300L),
+        participacion_2 = c(259071L, 2000L, 600000L, 150000L, 600L, 500L),
+        participacion_3 = rep(NA_integer_, 6),
+        votos_validos = c(328097L, 3000L, 700000L, 180000L, 700L, 600L),
+        abstenciones = c(169541L, 2000L, 300000L, 70000L, 300L, 200L),
+        votos_blancos = c(2283L, 20L, 5000L, 1000L, 5L, 4L),
+        votos_nulos = c(2918L, 30L, 6000L, 1200L, 6L, 5L),
+        nrepresentantes = c(6L, 0L, 20L, 5L, 0L, 0L)
     ), append = TRUE)
     DBI::dbWriteTable(con, "votos_territoriales", data.frame(
-        id = c(5732189L, 5732190L, 5732191L), eleccion_id = rep(208L, 3),
-        territorio_id = c(20L, 20L, 21L), partido_id = c(8180L, 9451L, 9451L),
-        votos = c(73952L, 98924L, 2500L), representantes = c(2L, 2L, 0L)
+        id = 5732189:5732195, eleccion_id = rep(208L, 7),
+        territorio_id = c(20L, 20L, 21L, 1L, 22L, 23L, 24L),
+        partido_id = c(8180L, 9451L, 9451L, 9451L, 9451L, 9451L, 9451L),
+        votos = c(73952L, 98924L, 2500L, 400000L, 100000L, 500L, 450L),
+        representantes = c(2L, 2L, 0L, 10L, 3L, 0L, 0L)
     ), append = TRUE)
     path
 }

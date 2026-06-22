@@ -48,6 +48,7 @@
 #' - [get_totales_territorio()] — territorial totals (cross-election)
 #' - [get_votos_partido()] — per-party votes (cross-election)
 #' - [get_resultados()] — fully expanded votes (best for analysis)
+#' - [get_circunscripciones()] — constituency-level expanded results
 #'
 #' **CERA (overseas vote):**
 #' - [get_cera_resumen()] — overseas summaries

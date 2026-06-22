@@ -14,7 +14,7 @@ test_that("get_territorio returns 1-row tibble with all codes", {
     expect_equal(nrow(tbl), 1)
     expect_true("codigo_municipio" %in% names(tbl))
     expect_true("parent_id" %in% names(tbl))
-    expect_true(is.na(tbl$codigo_circunscripcion))
+    expect_equal(tbl$codigo_circunscripcion, "99")
     expect_true(is.na(tbl$parent_id))
 })
 

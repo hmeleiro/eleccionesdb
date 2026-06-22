@@ -117,7 +117,8 @@ sqlite_fact_filters <- function(eleccion_id = NULL, territorio_id = NULL,
                                 partido_id = NULL, year = NULL,
                                 tipo_eleccion = NULL, tipo_territorio = NULL,
                                 codigo_ccaa = NULL, codigo_provincia = NULL,
-                                codigo_municipio = NULL, alias = "f") {
+                                codigo_municipio = NULL,
+                                codigo_circunscripcion = NULL, alias = "f") {
     state <- list(clauses = character(), params = list())
     state <- sqlite_add_in_filter(state, paste0(alias, ".eleccion_id"), eleccion_id)
     state <- sqlite_add_in_filter(state, paste0(alias, ".territorio_id"), territorio_id)
@@ -129,7 +130,10 @@ sqlite_fact_filters <- function(eleccion_id = NULL, territorio_id = NULL,
     state <- sqlite_add_in_filter(state, "t.tipo", tipo_territorio)
     state <- sqlite_add_in_filter(state, "t.codigo_ccaa", codigo_ccaa)
     state <- sqlite_add_in_filter(state, "t.codigo_provincia", codigo_provincia)
-    sqlite_add_in_filter(state, "t.codigo_municipio", codigo_municipio)
+    state <- sqlite_add_in_filter(state, "t.codigo_municipio", codigo_municipio)
+    sqlite_add_in_filter(
+        state, "t.codigo_circunscripcion", codigo_circunscripcion
+    )
 }
 
 #' @noRd
@@ -249,12 +253,14 @@ sqlite_get_totales <- function(eleccion_id = NULL, territorio_id = NULL,
                                year = NULL, tipo_eleccion = NULL,
                                tipo_territorio = NULL, codigo_ccaa = NULL,
                                codigo_provincia = NULL, codigo_municipio = NULL,
+                               codigo_circunscripcion = NULL,
                                limit = 50L, skip = 0L, all_pages = FALSE) {
     state <- sqlite_fact_filters(
         eleccion_id, territorio_id, year = year,
         tipo_eleccion = tipo_eleccion, tipo_territorio = tipo_territorio,
         codigo_ccaa = codigo_ccaa, codigo_provincia = codigo_provincia,
-        codigo_municipio = codigo_municipio, alias = "r"
+        codigo_municipio = codigo_municipio,
+        codigo_circunscripcion = codigo_circunscripcion, alias = "r"
     )
     sqlite_query(
         "r.*",
@@ -271,12 +277,14 @@ sqlite_get_votos <- function(eleccion_id = NULL, territorio_id = NULL,
                              partido_id = NULL, year = NULL,
                              tipo_eleccion = NULL, tipo_territorio = NULL,
                              codigo_ccaa = NULL, codigo_provincia = NULL,
-                             codigo_municipio = NULL, limit = 50L, skip = 0L,
+                             codigo_municipio = NULL,
+                             codigo_circunscripcion = NULL,
+                             limit = 50L, skip = 0L,
                              all_pages = FALSE) {
     state <- sqlite_fact_filters(
         eleccion_id, territorio_id, partido_id, year, tipo_eleccion,
         tipo_territorio, codigo_ccaa, codigo_provincia, codigo_municipio,
-        alias = "v"
+        codigo_circunscripcion, alias = "v"
     )
     sqlite_query(
         "v.*",
@@ -317,12 +325,13 @@ sqlite_get_resultados <- function(eleccion_id = NULL, territorio_id = NULL,
                                   partido_id = NULL, year = NULL,
                                   tipo_eleccion = NULL, tipo_territorio = NULL,
                                   codigo_ccaa = NULL, codigo_provincia = NULL,
-                                  codigo_municipio = NULL, limit = 50L,
+                                  codigo_municipio = NULL,
+                                  codigo_circunscripcion = NULL, limit = 50L,
                                   skip = 0L, all_pages = TRUE) {
     state <- sqlite_fact_filters(
         eleccion_id, territorio_id, partido_id, year, tipo_eleccion,
         tipo_territorio, codigo_ccaa, codigo_provincia, codigo_municipio,
-        alias = "v"
+        codigo_circunscripcion, alias = "v"
     )
     select <- paste(
         "v.id, v.eleccion_id, v.territorio_id, v.partido_id, v.votos, v.representantes,",
