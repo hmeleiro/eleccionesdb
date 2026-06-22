@@ -14,11 +14,8 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 
 ``` r
 
-# Install from local source
-devtools::install_local("hmeleiro/eleccionesdb-r")
-
-# Or with remotes (when published)
-# remotes::install_github("hmeleiro/eleccionesdb-r")
+# Install with remotes
+remotes::install_github("hmeleiro/eleccionesdb-r")
 ```
 
 ## Quick start
@@ -162,16 +159,11 @@ para rutas personalizadas, validación y política de fallback.
 
 ## Configuración
 
-### Autenticación y configuración
-
-Desde abril de 2026, la mayoría de endpoints requieren autenticación
-mediante API key.
-
 #### Cómo obtener tu API key
 
-1.  Regístrate en la web de [eleccionesdb
-    API](https://eleccionesdb-api.spainelectoralproject.com/developers/)
-    con tu correo electrónico.
+1.  Regístrate en el [portal de
+    desarrolladores](https://eleccionesdb-api.spainelectoralproject.com/developers/)
+    de eleccionesdb y verifica tu email.
 2.  Recibirás una clave personal que deberás usar en todas las
     peticiones protegidas.
 

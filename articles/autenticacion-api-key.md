@@ -7,8 +7,9 @@ una API key personal.
 
 ### ¿Cómo obtengo mi API key?
 
-1.  Regístrate en el endpoint `/v1/auth/register` de la API y verifica
-    tu email.
+1.  Regístrate en el [portal de
+    desarrolladores](https://eleccionesdb-api.spainelectoralproject.com/developers/)
+    de eleccionesdb y verifica tu email.
 2.  Recibirás una clave personal que deberás usar en todas las
     peticiones protegidas.
 

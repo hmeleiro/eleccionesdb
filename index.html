@@ -59,11 +59,8 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install from local source</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_local</span><span class="op">(</span><span class="st">"hmeleiro/eleccionesdb-r"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Or with remotes (when published)</span></span>
-<span><span class="co"># remotes::install_github("hmeleiro/eleccionesdb-r")</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Install with remotes</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hmeleiro/eleccionesdb-r"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -291,15 +288,11 @@
 <div class="section level2">
 <h2 id="configuración">Configuración<a class="anchor" aria-label="anchor" href="#configuraci%C3%B3n"></a>
 </h2>
-<div class="section level3">
-<h3 id="autenticación-y-configuración">Autenticación y configuración<a class="anchor" aria-label="anchor" href="#autenticaci%C3%B3n-y-configuraci%C3%B3n"></a>
-</h3>
-<p>Desde abril de 2026, la mayoría de endpoints requieren autenticación mediante API key.</p>
 <div class="section level4">
 <h4 id="cómo-obtener-tu-api-key">Cómo obtener tu API key<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-obtener-tu-api-key"></a>
 </h4>
 <ol style="list-style-type: decimal">
-<li>Regístrate en la web de <a href="https://eleccionesdb-api.spainelectoralproject.com/developers/" class="external-link">eleccionesdb API</a> con tu correo electrónico.</li>
+<li>Regístrate en el <a href="https://eleccionesdb-api.spainelectoralproject.com/developers/" class="external-link">portal de desarrolladores</a> de eleccionesdb y verifica tu email.</li>
 <li>Recibirás una clave personal que deberás usar en todas las peticiones protegidas.</li>
 </ol>
 </div>
@@ -379,7 +372,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 <div class="section level2">
