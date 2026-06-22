@@ -103,11 +103,12 @@ get_resultados(
 
 A tibble. When `clean = TRUE`: `year`, `mes`, `tipo_eleccion`,
 `tipo_territorio`, `territorio_nombre`, `codigo_ccaa`,
-`codigo_provincia`, `codigo_municipio`, `codigo_distrito`,
-`codigo_seccion`, `censo_ine`, `votos_validos`, `abstenciones`,
-`votos_blancos`, `votos_nulos`, `participacion_1`, `participacion_2`,
-`participacion_3`, `siglas`, `denominacion`, `partido_recode`,
-`partido_agrupacion`, `votos`, `representantes`, `nrepresentantes`.
+`codigo_provincia`, `codigo_circunscripcion`, `codigo_municipio`,
+`codigo_distrito`, `codigo_seccion`, `censo_ine`, `votos_validos`,
+`abstenciones`, `votos_blancos`, `votos_nulos`, `participacion_1`,
+`participacion_2`, `participacion_3`, `siglas`, `denominacion`,
+`partido_recode`, `partido_agrupacion`, `votos`, `representantes`,
+`nrepresentantes`.
 
 When `clean = FALSE`: all flattened columns with prefixes `partido_*`,
 `recode_*`, `territorio_*`, `eleccion_*`, plus the flat summary columns
