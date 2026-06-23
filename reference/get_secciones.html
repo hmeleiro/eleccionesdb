@@ -23,7 +23,7 @@ on the returned tibble.'></head><body>
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb-r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -33,7 +33,7 @@ on the returned tibble.'></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Results by census section</h1>
-      <small class="dont-index">Source: <a href="https://github.com/hmeleiro/eleccionesdb-r/blob/main/R/resultados.R" class="external-link"><code>R/resultados.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/hmeleiro/eleccionesdb/blob/main/R/resultados.R" class="external-link"><code>R/resultados.R</code></a></small>
       <div class="d-none name"><code>get_secciones.Rd</code></div>
     </div>
 
@@ -51,6 +51,7 @@ on the returned tibble.</p>
 <span>  codigo_ccaa <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  codigo_provincia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  codigo_municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  codigo_circunscripcion <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  eleccion_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  territorio_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -90,6 +91,11 @@ code(s) (e.g. <code>"01"</code>, <code>"13"</code>). Optional.</p></dd>
 <dt id="arg-codigo-municipio">codigo_municipio<a class="anchor" aria-label="anchor" href="#arg-codigo-municipio"></a></dt>
 <dd><p>Character vector. Filter by municipality INE
 code(s). Optional.</p></dd>
+
+
+<dt id="arg-codigo-circunscripcion">codigo_circunscripcion<a class="anchor" aria-label="anchor" href="#arg-codigo-circunscripcion"></a></dt>
+<dd><p>Character vector. Filter by constituency
+code(s), including <code>"99"</code> for CCAA and provinces. Optional.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

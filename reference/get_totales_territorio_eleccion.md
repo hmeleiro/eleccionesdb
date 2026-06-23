@@ -12,6 +12,7 @@ get_totales_territorio_eleccion(
   codigo_ccaa = NULL,
   codigo_provincia = NULL,
   codigo_municipio = NULL,
+  codigo_circunscripcion = NULL,
   ...,
   territorio_id = NULL,
   limit = 50L,
@@ -48,6 +49,11 @@ get_totales_territorio_eleccion(
 - codigo_municipio:
 
   Character vector. Filter by municipality INE code(s). Optional.
+
+- codigo_circunscripcion:
+
+  Character vector. Filter by constituency code(s), including `"99"` for
+  CCAA and provinces. Optional.
 
 - ...:
 

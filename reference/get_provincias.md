@@ -1,9 +1,9 @@
 # Results by province
 
 A convenience wrapper around
-[`get_resultados()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultados.md)
+[`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
 that pre-sets `tipo_territorio = "provincia"`. See
-[`get_resultados()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultados.md)
+[`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
 for full details on the returned tibble.
 
 ## Usage
@@ -15,6 +15,7 @@ get_provincias(
   codigo_ccaa = NULL,
   codigo_provincia = NULL,
   codigo_municipio = NULL,
+  codigo_circunscripcion = NULL,
   ...,
   eleccion_id = NULL,
   territorio_id = NULL,
@@ -52,6 +53,11 @@ get_provincias(
 - codigo_municipio:
 
   Character vector. Filter by municipality INE code(s). Optional.
+
+- codigo_circunscripcion:
+
+  Character vector. Filter by constituency code(s), including `"99"` for
+  CCAA and provinces. Optional.
 
 - ...:
 
@@ -95,7 +101,7 @@ get_provincias(
 ## Value
 
 A tibble as returned by
-[`get_resultados()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultados.md)
+[`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
 filtered to `tipo_territorio = "provincia"`.
 
 ## Examples

@@ -40,7 +40,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb-r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -51,7 +51,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="eleccionesdb">eleccionesdb<a class="anchor" aria-label="anchor" href="#eleccionesdb"></a>
 </h1></div>
-<p><a href="https://github.com/hmeleiro/eleccionesdb-r/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/hmeleiro/eleccionesdb-r/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a></p>
+<p><a href="https://github.com/hmeleiro/eleccionesdb/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/hmeleiro/eleccionesdb/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a></p>
 <blockquote>
 <p>R client for the <a href="https://eleccionesdb-api.spainelectoralproject.com/" class="external-link">eleccionesdb API</a> — Spanish electoral data as tidy tibbles.</p>
 </blockquote>
@@ -60,13 +60,13 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install with remotes</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hmeleiro/eleccionesdb-r"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hmeleiro/eleccionesdb"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://hmeleiro.github.io/eleccionesdb-r">eleccionesdb</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://eleccionesdb-r.spainelectoralproject.com/">eleccionesdb</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/get_health.html">get_health</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check API is running</span></span>
@@ -261,6 +261,22 @@
 <td><code>get_resultados(...)</code></td>
 <td>Fully expanded results (best for analysis)</td>
 </tr>
+<tr>
+<td>
+<code>get_ccaa(...)</code>, <code>get_provincias(...)</code>
+</td>
+<td>Results by CCAA or province</td>
+</tr>
+<tr>
+<td><code>get_circunscripciones(...)</code></td>
+<td>Results by constituency</td>
+</tr>
+<tr>
+<td>
+<code>get_municipios(...)</code>, <code>get_secciones(...)</code>
+</td>
+<td>Results by municipality or section</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -427,8 +443,8 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/hmeleiro/eleccionesdb-r/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/hmeleiro/eleccionesdb-r/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/hmeleiro/eleccionesdb/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/hmeleiro/eleccionesdb/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 

@@ -19,8 +19,8 @@ datos:
 
 | Función | Devuelve |
 |----|----|
-| [`get_cera_resumen()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_resumen.md) | Resúmenes de participación CERA (censo, votos válidos, abstenciones…) |
-| [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md) | Votos por partido en el exterior |
+| [`get_cera_resumen()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_resumen.md) | Resúmenes de participación CERA (censo, votos válidos, abstenciones…) |
+| [`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md) | Votos por partido en el exterior |
 
 Ambas funciones soportan paginación (`limit`, `skip`, `all_pages`) y los
 mismos filtros cruzados que los endpoints de resultados nacionales.
@@ -28,7 +28,7 @@ mismos filtros cruzados que los endpoints de resultados nacionales.
 Además, ambas funciones soportan el parámetro `denormalize = TRUE` para
 añadir columnas descriptivas (`eleccion_descripcion`,
 `territorio_nombre`) junto a las columnas de ID.
-[`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md)
+[`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md)
 acepta además `use_recode = TRUE` para que `partido_nombre` use la
 agrupación del recode.
 
@@ -36,7 +36,7 @@ agrupación del recode.
 
 ## Resúmenes de participación CERA
 
-[`get_cera_resumen()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_resumen.md)
+[`get_cera_resumen()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_resumen.md)
 devuelve datos agregados de participación del voto exterior: censo,
 participación, votos válidos, nulos, en blanco y abstenciones.
 
@@ -79,7 +79,7 @@ cera_2019 <- get_cera_resumen(year = "2019", all_pages = TRUE)
 
 ## Votos por partido en el exterior
 
-[`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md)
+[`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md)
 devuelve el desglose de votos por partido en las circunscripciones CERA:
 
 ``` r
@@ -297,9 +297,9 @@ ggplot(evolucion_cera, aes(x = fecha, y = tasa)) +
 ## Referencia rápida de filtros CERA
 
 Ambas funciones
-([`get_cera_resumen()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_resumen.md)
+([`get_cera_resumen()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_resumen.md)
 y
-[`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md))
+[`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md))
 aceptan estos parámetros de filtro:
 
 | Parámetro       | Tipo      | Descripción                       |
@@ -310,7 +310,7 @@ aceptan estos parámetros de filtro:
 | `tipo_eleccion` | character | Código de tipo (ej. `"G"`, `"E"`) |
 
 Además,
-[`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md)
+[`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md)
 acepta:
 
 | Parámetro    | Tipo    | Descripción               |
@@ -321,21 +321,21 @@ acepta:
 
 Ambas funciones aceptan `denormalize = TRUE` para añadir columnas
 descriptivas.
-[`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md)
+[`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md)
 acepta además `use_recode = TRUE`:
 
 | Parámetro | Funciones | Descripción |
 |----|----|----|
 | `denormalize` | Ambas | Añade `eleccion_descripcion` y `territorio_nombre` |
-| `use_recode` | [`get_cera_votos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_cera_votos.md) | `partido_nombre` usa la agrupación del recode |
+| `use_recode` | [`get_cera_votos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_cera_votos.md) | `partido_nombre` usa la agrupación del recode |
 
 ------------------------------------------------------------------------
 
 ## Otros vignettes
 
 - **Introducción**: conceptos básicos y configuración en
-  [`vignette("introduccion")`](https://hmeleiro.github.io/eleccionesdb-r/articles/introduccion.md).
+  [`vignette("introduccion")`](https://eleccionesdb-r.spainelectoralproject.com/articles/introduccion.md).
 - **Territorios y partidos**: datos maestros en
-  [`vignette("datos-maestros")`](https://hmeleiro.github.io/eleccionesdb-r/articles/datos-maestros.md).
+  [`vignette("datos-maestros")`](https://eleccionesdb-r.spainelectoralproject.com/articles/datos-maestros.md).
 - **Análisis de resultados**: flujos completos con dplyr y ggplot2 en
-  [`vignette("analisis-resultados")`](https://hmeleiro.github.io/eleccionesdb-r/articles/analisis-resultados.md).
+  [`vignette("analisis-resultados")`](https://eleccionesdb-r.spainelectoralproject.com/articles/analisis-resultados.md).

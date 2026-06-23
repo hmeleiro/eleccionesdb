@@ -1,6 +1,6 @@
 # eleccionesdb
 
-[![R-CMD-check](https://github.com/hmeleiro/eleccionesdb-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hmeleiro/eleccionesdb-r/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/hmeleiro/eleccionesdb/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hmeleiro/eleccionesdb/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: GPL
@@ -15,7 +15,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 ``` r
 
 # Install with remotes
-remotes::install_github("hmeleiro/eleccionesdb-r")
+remotes::install_github("hmeleiro/eleccionesdb")
 ```
 
 ## Quick start
@@ -109,7 +109,7 @@ edb_set_backend("api")
 
 La selección dura únicamente durante la sesión y las actualizaciones se
 comprueban de forma explícita. Consulta
-[`vignette("backend-sqlite")`](https://hmeleiro.github.io/eleccionesdb-r/articles/backend-sqlite.md)
+[`vignette("backend-sqlite")`](https://eleccionesdb-r.spainelectoralproject.com/articles/backend-sqlite.md)
 para rutas personalizadas, validación y política de fallback.
 
 ## Function reference
@@ -118,7 +118,7 @@ para rutas personalizadas, validación y política de fallback.
 
 | Function | Description |
 |----|----|
-| [`get_tipos_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_tipos_eleccion.md) | Catalogue of election types |
+| [`get_tipos_eleccion()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_tipos_eleccion.md) | Catalogue of election types |
 | `get_tipo_eleccion(codigo)` | Single election type by code |
 | `get_elecciones(...)` | List elections (filterable, paginated) |
 | `get_eleccion(id)` | Election detail (with tipo flattened) |
@@ -149,6 +149,9 @@ para rutas personalizadas, validación y política de fallback.
 | `get_totales_territorio(...)` | Territorial totals (cross-election) |
 | `get_votos_partido(...)` | Per-party votes (cross-election) |
 | `get_resultados(...)` | Fully expanded results (best for analysis) |
+| `get_ccaa(...)`, `get_provincias(...)` | Results by CCAA or province |
+| `get_circunscripciones(...)` | Results by constituency |
+| `get_municipios(...)`, `get_secciones(...)` | Results by municipality or section |
 
 ### CERA (overseas vote)
 
@@ -202,27 +205,27 @@ get_partidos(siglas = "psoe", api_key = "OTRA_CLAVE")
 | Function | Description |
 |----|----|
 | `edb_set_base_url(url)` | Set API base URL |
-| [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md) | Get current API base URL |
+| [`edb_get_base_url()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_get_base_url.md) | Get current API base URL |
 | `edb_set_api_key(key, persist=FALSE)` | Set API key (session/persistente) |
-| [`edb_get_api_key()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_api_key.md) | Get current API key |
-| [`edb_get_base_url()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_base_url.md) | Get current API base URL |
-| [`edb_set_backend()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_set_backend.md) | Seleccionar API o SQLite para la sesión |
-| [`edb_get_backend()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_get_backend.md) | Consultar el backend activo |
-| [`edb_download_sqlite()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_download_sqlite.md) | Descargar o actualizar el snapshot local |
-| [`edb_check_sqlite_update()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_check_sqlite_update.md) | Comprobar si hay una versión nueva |
-| [`edb_sqlite_path()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_sqlite_path.md) | Ruta local predeterminada |
+| [`edb_get_api_key()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_get_api_key.md) | Get current API key |
+| [`edb_get_base_url()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_get_base_url.md) | Get current API base URL |
+| [`edb_set_backend()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_set_backend.md) | Seleccionar API o SQLite para la sesión |
+| [`edb_get_backend()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_get_backend.md) | Consultar el backend activo |
+| [`edb_download_sqlite()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_download_sqlite.md) | Descargar o actualizar el snapshot local |
+| [`edb_check_sqlite_update()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_check_sqlite_update.md) | Comprobar si hay una versión nueva |
+| [`edb_sqlite_path()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_sqlite_path.md) | Ruta local predeterminada |
 
 ## Nested data handling
 
 The package flattens nested JSON objects into prefixed columns for easy
 analysis:
 
-- **[`get_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_eleccion.md)**:
+- **[`get_eleccion()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_eleccion.md)**:
   `tipo` → `tipo_codigo`, `tipo_descripcion`
-- **[`get_partido()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_partido.md)**:
+- **[`get_partido()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_partido.md)**:
   `recode` → `recode_id`, `recode_partido_recode`, `recode_agrupacion`,
   `recode_color`
-- **[`get_resultados()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultados.md)**:
+- **[`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)**:
   Flattens and renames `partido.*`, `recode.*`, `territorio.*`,
   `eleccion.*` (`clean = TRUE` by default)
 

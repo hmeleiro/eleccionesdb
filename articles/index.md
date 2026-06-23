@@ -3,22 +3,22 @@
 ### Primeros pasos
 
 - [Introducción a
-  eleccionesdb](https://hmeleiro.github.io/eleccionesdb-r/articles/introduccion.md):
+  eleccionesdb](https://eleccionesdb-r.spainelectoralproject.com/articles/introduccion.md):
 
 ### Guías
 
 - [Territorios y
-  partidos](https://hmeleiro.github.io/eleccionesdb-r/articles/datos-maestros.md):
+  partidos](https://eleccionesdb-r.spainelectoralproject.com/articles/datos-maestros.md):
 - [Análisis de resultados
-  electorales](https://hmeleiro.github.io/eleccionesdb-r/articles/analisis-resultados.md):
+  electorales](https://eleccionesdb-r.spainelectoralproject.com/articles/analisis-resultados.md):
 - [Voto exterior
-  (CERA)](https://hmeleiro.github.io/eleccionesdb-r/articles/voto-exterior-cera.md):
+  (CERA)](https://eleccionesdb-r.spainelectoralproject.com/articles/voto-exterior-cera.md):
 
 ### Avanzado
 
 - [Backend
-  SQLite](https://hmeleiro.github.io/eleccionesdb-r/articles/backend-sqlite.md):
+  SQLite](https://eleccionesdb-r.spainelectoralproject.com/articles/backend-sqlite.md):
 - [Despliegue propio de la base de datos y la
-  API](https://hmeleiro.github.io/eleccionesdb-r/articles/autodespliegue.md):
+  API](https://eleccionesdb-r.spainelectoralproject.com/articles/autodespliegue.md):
 - [Autenticación: cómo establecer la API
-  key](https://hmeleiro.github.io/eleccionesdb-r/articles/autenticacion-api-key.md):
+  key](https://eleccionesdb-r.spainelectoralproject.com/articles/autenticacion-api-key.md):

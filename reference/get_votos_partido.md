@@ -12,6 +12,7 @@ get_votos_partido(
   codigo_ccaa = NULL,
   codigo_provincia = NULL,
   codigo_municipio = NULL,
+  codigo_circunscripcion = NULL,
   ...,
   eleccion_id = NULL,
   territorio_id = NULL,
@@ -57,6 +58,11 @@ get_votos_partido(
 - codigo_municipio:
 
   Character vector. Filter by municipality INE code(s). Optional.
+
+- codigo_circunscripcion:
+
+  Character vector. Filter by constituency code(s), including `"99"` for
+  CCAA and provinces. Optional.
 
 - ...:
 

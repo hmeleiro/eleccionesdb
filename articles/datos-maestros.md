@@ -35,7 +35,7 @@ permite navegar hacia arriba en la jerarquía.
 
 ### Listar territorios
 
-[`get_territorios()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_territorios.md)
+[`get_territorios()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_territorios.md)
 devuelve un listado paginado que puedes filtrar por tipo, códigos
 jerárquicos y nombre:
 
@@ -86,7 +86,7 @@ get_territorios(nombre = "madrid")
 
 ### Detalle de un territorio
 
-[`get_territorio()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_territorio.md)
+[`get_territorio()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_territorio.md)
 devuelve todos los códigos jerárquicos de un territorio:
 
 ``` r
@@ -103,7 +103,7 @@ get_territorio(27)
 
 ### Navegar la jerarquía
 
-[`get_territorio_hijos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_territorio_hijos.md)
+[`get_territorio_hijos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_territorio_hijos.md)
 devuelve los hijos directos de un territorio, permitiendo recorrer la
 jerarquía de arriba a abajo:
 
@@ -170,7 +170,7 @@ resumen_provincias
 
 ### Buscar partidos
 
-[`get_partidos()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_partidos.md)
+[`get_partidos()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_partidos.md)
 permite buscar partidos por siglas, denominación o por su grupo de
 recode:
 
@@ -198,7 +198,7 @@ get_partidos(partido_recode_id = 80, all_pages = TRUE)
 
 ### Detalle de un partido
 
-[`get_partido()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_partido.md)
+[`get_partido()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_partido.md)
 devuelve el detalle completo de un partido, con los datos del recode
 expandidos como columnas con prefijo `recode_`:
 
@@ -243,7 +243,7 @@ get_partidos_recode(agrupacion = "izquierda")
 
 ### Detalle de una agrupación
 
-[`get_partido_recode()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_partido_recode.md)
+[`get_partido_recode()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_partido_recode.md)
 devuelve una **lista** con dos elementos:
 
 - `$recode` — tibble de 1 fila con la información del grupo.
@@ -304,7 +304,7 @@ tamanos |>
 
 - **Análisis de resultados**: aprende a combinar estos datos maestros
   con resultados electorales en
-  [`vignette("analisis-resultados")`](https://hmeleiro.github.io/eleccionesdb-r/articles/analisis-resultados.md).
+  [`vignette("analisis-resultados")`](https://eleccionesdb-r.spainelectoralproject.com/articles/analisis-resultados.md).
 - **Voto exterior (CERA)**: datos del Censo de Españoles Residentes
   Ausentes en
-  [`vignette("voto-exterior-cera")`](https://hmeleiro.github.io/eleccionesdb-r/articles/voto-exterior-cera.md).
+  [`vignette("voto-exterior-cera")`](https://eleccionesdb-r.spainelectoralproject.com/articles/voto-exterior-cera.md).

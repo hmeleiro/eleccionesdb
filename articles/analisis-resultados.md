@@ -16,7 +16,7 @@ consulta de datos hasta la visualización.
 
 ## Función principal: `get_resultados()`
 
-[`get_resultados()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultados.md)
+[`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
 es la función central del paquete para análisis electoral. Devuelve un
 tibble ancho que combina en una sola tabla:
 
@@ -27,8 +27,8 @@ tibble ancho que combina en una sola tabla:
   `participacion_2`, `participacion_3`, `nrepresentantes`
 - **Metadatos de elección y territorio**: `year`, `mes`,
   `tipo_eleccion`, `tipo_territorio`, `territorio_nombre`,
-  `codigo_ccaa`, `codigo_provincia`, `codigo_municipio`,
-  `codigo_distrito`, `codigo_seccion`
+  `codigo_ccaa`, `codigo_provincia`, `codigo_circunscripcion`,
+  `codigo_municipio`, `codigo_distrito`, `codigo_seccion`
 
 La unión de votos y totales se realiza internamente (no hace falta
 ningún `join` manual). Por defecto, `clean = TRUE` renombra las columnas
@@ -44,17 +44,17 @@ andalucia <- get_resultados(
   all_pages = TRUE
 )
 
-# Las 25 columnas listas para usar directamente:
+# Las 26 columnas listas para usar directamente:
 names(andalucia)
 #>  [1] "year"              "mes"               "tipo_eleccion"
 #>  [4] "tipo_territorio"   "territorio_nombre" "codigo_ccaa"
-#>  [7] "codigo_provincia"  "codigo_municipio"  "codigo_distrito"
-#> [10] "codigo_seccion"    "censo_ine"         "votos_validos"
-#> [13] "abstenciones"      "votos_blancos"     "votos_nulos"
-#> [16] "participacion_1"   "participacion_2"   "participacion_3"
-#> [19] "siglas"            "denominacion"      "partido_recode"
-#> [22] "partido_agrupacion" "votos"            "representantes"
-#> [25] "nrepresentantes"
+#>  [7] "codigo_provincia"  "codigo_circunscripcion" "codigo_municipio"
+#> [10] "codigo_distrito"   "codigo_seccion"    "censo_ine"
+#> [13] "votos_validos"     "abstenciones"      "votos_blancos"
+#> [16] "votos_nulos"       "participacion_1"   "participacion_2"
+#> [19] "participacion_3"   "siglas"            "denominacion"
+#> [22] "partido_recode"    "partido_agrupacion" "votos"
+#> [25] "representantes"    "nrepresentantes"
 ```
 
 ### Atajos territoriales
@@ -65,7 +65,8 @@ tener que escribir `tipo_territorio` cada vez:
 | Función | Equivale a |
 |----|----|
 | `get_ccaa(...)` | `get_resultados(..., tipo_territorio = "ccaa")` |
-| `get_provincia(...)` | `get_resultados(..., tipo_territorio = "provincia")` |
+| `get_provincias(...)` | `get_resultados(..., tipo_territorio = "provincia")` |
+| `get_circunscripciones(...)` | `get_resultados(..., tipo_territorio = "circunscripcion")` |
 | `get_municipios(...)` | `get_resultados(..., tipo_territorio = "municipio")` |
 | `get_secciones(...)` | `get_resultados(..., tipo_territorio = "seccion")` |
 
@@ -88,10 +89,10 @@ de acceso a bajo nivel:
 
 | Función | Devuelve |
 |----|----|
-| [`get_totales_territorio_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio_eleccion.md) | Totales territoriales de una elección concreta |
-| [`get_resultado_completo()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultado_completo.md) | Lista con `$totales_territorio` + `$votos_partido` para una elección y territorio |
-| [`get_totales_territorio()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio.md) | Totales territoriales filtrables (cruce de elecciones) |
-| [`get_votos_partido()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_votos_partido.md) | Votos por partido filtrables (cruce de elecciones) |
+| [`get_totales_territorio_eleccion()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_totales_territorio_eleccion.md) | Totales territoriales de una elección concreta |
+| [`get_resultado_completo()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultado_completo.md) | Lista con `$totales_territorio` + `$votos_partido` para una elección y territorio |
+| [`get_totales_territorio()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_totales_territorio.md) | Totales territoriales filtrables (cruce de elecciones) |
+| [`get_votos_partido()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_votos_partido.md) | Votos por partido filtrables (cruce de elecciones) |
 
 Estas funciones devuelven IDs normalizados. Usa `denormalize = TRUE`
 para añadir columnas descriptivas sin join manual:
@@ -218,7 +219,7 @@ madrid_sec <- get_secciones(
 
 ## 2. Análisis con resultados combinados
 
-[`get_resultados()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_resultados.md)
+[`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
 y sus atajos territoriales combinan votos y totales territoriales en una
 sola tabla lista para analizar con dplyr.
 
@@ -317,7 +318,7 @@ ggplot(
 ## 3. Comparar participación entre elecciones
 
 Con
-[`get_ccaa()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_ccaa.md)
+[`get_ccaa()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_ccaa.md)
 o `get_provincia()`, los datos de censo y participación ya están
 incluidos en la misma tabla, por lo que no hace falta un join manual:
 
@@ -359,7 +360,7 @@ ggplot(media_nacional, aes(x = year, y = media_participacion, group = 1)) +
 ## 4. Evolución del voto de una agrupación
 
 Con `get_provincia()` (o
-[`get_ccaa()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_ccaa.md))
+[`get_ccaa()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_ccaa.md))
 se obtienen votos y metadatos de elección en la misma tabla, por lo que
 el análisis temporal no requiere joins:
 
@@ -442,9 +443,9 @@ ggplot(representantes, aes(
 
 - **Introducción**: si aún no lo has leído, repasa los conceptos básicos
   en
-  [`vignette("introduccion")`](https://hmeleiro.github.io/eleccionesdb-r/articles/introduccion.md).
+  [`vignette("introduccion")`](https://eleccionesdb-r.spainelectoralproject.com/articles/introduccion.md).
 - **Territorios y partidos**: profundiza en los datos maestros en
-  [`vignette("datos-maestros")`](https://hmeleiro.github.io/eleccionesdb-r/articles/datos-maestros.md).
+  [`vignette("datos-maestros")`](https://eleccionesdb-r.spainelectoralproject.com/articles/datos-maestros.md).
 - **Voto exterior (CERA)**: analiza el voto de los españoles en el
   extranjero en
-  [`vignette("voto-exterior-cera")`](https://hmeleiro.github.io/eleccionesdb-r/articles/voto-exterior-cera.md).
+  [`vignette("voto-exterior-cera")`](https://eleccionesdb-r.spainelectoralproject.com/articles/voto-exterior-cera.md).

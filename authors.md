@@ -7,16 +7,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/hmeleiro/eleccionesdb-r/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/hmeleiro/eleccionesdb/blob/main/DESCRIPTION)
 
 Meleiro H (2026). *eleccionesdb: R Client for EleccionesDB Electoral
 Data*. R package version 0.1.0,
-<https://hmeleiro.github.io/eleccionesdb-r>.
+<https://eleccionesdb-r.spainelectoralproject.com/>.
 
     @Manual{,
       title = {eleccionesdb: R Client for EleccionesDB Electoral Data},
       author = {Héctor Meleiro},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://hmeleiro.github.io/eleccionesdb-r},
+      url = {https://eleccionesdb-r.spainelectoralproject.com/},
     }

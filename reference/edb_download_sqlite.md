@@ -14,7 +14,7 @@ edb_download_sqlite(path = NULL, force = FALSE)
 - path:
 
   Destination SQLite path. Defaults to
-  [`edb_sqlite_path()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_sqlite_path.md).
+  [`edb_sqlite_path()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_sqlite_path.md).
 
 - force:
 

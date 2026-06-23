@@ -40,7 +40,7 @@ edb_set_backend("api")
 ```
 
 La configuración solo afecta a la sesión actual.
-[`get_health()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_health.md)
+[`get_health()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_health.md)
 pertenece a la API: con SQLite activo avisa antes de usar la red. Los
 errores de lectura, corrupción o esquema SQLite no hacen fallback, para
 no ocultar problemas.
@@ -59,7 +59,7 @@ edb_set_backend("sqlite", ruta)
 ```
 
 La ubicación predeterminada se consulta con
-[`edb_sqlite_path()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_sqlite_path.md).
+[`edb_sqlite_path()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_sqlite_path.md).
 No se comprueban actualizaciones durante las consultas, por lo que una
 instalación existente se puede utilizar completamente offline.
 

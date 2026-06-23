@@ -38,7 +38,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb-r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -55,7 +55,7 @@
       <h1>Backend SQLite</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/hmeleiro/eleccionesdb-r/blob/main/vignettes/backend-sqlite.Rmd" class="external-link"><code>vignettes/backend-sqlite.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/hmeleiro/eleccionesdb/blob/main/vignettes/backend-sqlite.Rmd" class="external-link"><code>vignettes/backend-sqlite.Rmd</code></a></small>
       <div class="d-none name"><code>backend-sqlite.Rmd</code></div>
     </div>
 
@@ -71,7 +71,7 @@ datos más recientes.</p>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DBI"</span>, <span class="st">"RSQLite"</span>, <span class="st">"digest"</span>, <span class="st">"jsonlite"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://hmeleiro.github.io/eleccionesdb-r">eleccionesdb</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://eleccionesdb-r.spainelectoralproject.com/">eleccionesdb</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/edb_download_sqlite.html">edb_download_sqlite</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>El paquete consulta primero un manifiesto pequeño. Si el SHA-256
 instalado coincide con el remoto, no descarga otra vez el ZIP. La nueva

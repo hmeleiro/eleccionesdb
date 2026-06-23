@@ -1,15 +1,15 @@
-# Results by autonomous community
+# Results by constituency
 
 A convenience wrapper around
 [`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
-that pre-sets `tipo_territorio = "ccaa"`. See
+that pre-sets `tipo_territorio = "circunscripcion"`. See
 [`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
 for full details on the returned tibble.
 
 ## Usage
 
 ``` r
-get_ccaa(
+get_circunscripciones(
   year = NULL,
   tipo_eleccion = NULL,
   codigo_ccaa = NULL,
@@ -102,19 +102,16 @@ get_ccaa(
 
 A tibble as returned by
 [`get_resultados()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_resultados.md)
-filtered to `tipo_territorio = "ccaa"`.
+filtered to `tipo_territorio = "circunscripcion"`.
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-# CCAA-level results for general elections in 2019
-get_ccaa(tipo_eleccion = "G", year = "2019", all_pages = TRUE)
-
-# Use dplyr to compare turnout across CCAA
-library(dplyr)
-get_ccaa(tipo_eleccion = "G", year = "2019", all_pages = TRUE) |>
-    distinct(territorio_nombre, censo_ine, votos_validos) |>
-    mutate(participacion = votos_validos / censo_ine)
+# Constituency-level results for regional elections
+get_circunscripciones(
+    tipo_eleccion = "A", codigo_circunscripcion = "331",
+    all_pages = TRUE
+)
 } # }
 ```

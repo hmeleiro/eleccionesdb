@@ -2,7 +2,7 @@
 
 Returns paginated territorial totals across elections, with flexible
 filters. Unlike
-[`get_totales_territorio_eleccion()`](https://hmeleiro.github.io/eleccionesdb-r/reference/get_totales_territorio_eleccion.md),
+[`get_totales_territorio_eleccion()`](https://eleccionesdb-r.spainelectoralproject.com/reference/get_totales_territorio_eleccion.md),
 this can query across multiple elections.
 
 ## Usage
@@ -15,6 +15,7 @@ get_totales_territorio(
   codigo_ccaa = NULL,
   codigo_provincia = NULL,
   codigo_municipio = NULL,
+  codigo_circunscripcion = NULL,
   ...,
   eleccion_id = NULL,
   territorio_id = NULL,
@@ -58,6 +59,11 @@ get_totales_territorio(
 - codigo_municipio:
 
   Character vector. Filter by municipality INE code(s). Optional.
+
+- codigo_circunscripcion:
+
+  Character vector. Filter by constituency code(s), including `"99"` for
+  CCAA and provinces. Optional.
 
 - ...:
 

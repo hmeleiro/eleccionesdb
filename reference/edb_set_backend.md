@@ -19,7 +19,7 @@ edb_set_backend(backend = c("api", "sqlite"), path = NULL)
 - path:
 
   Path to `eleccionesdb.sqlite`. When omitted,
-  [`edb_sqlite_path()`](https://hmeleiro.github.io/eleccionesdb-r/reference/edb_sqlite_path.md)
+  [`edb_sqlite_path()`](https://eleccionesdb-r.spainelectoralproject.com/reference/edb_sqlite_path.md)
   is used.
 
 ## Value

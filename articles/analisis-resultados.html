@@ -38,7 +38,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb-r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hmeleiro/eleccionesdb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -55,14 +55,14 @@
       <h1>Análisis de resultados electorales</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/hmeleiro/eleccionesdb-r/blob/main/vignettes/analisis-resultados.Rmd" class="external-link"><code>vignettes/analisis-resultados.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/hmeleiro/eleccionesdb/blob/main/vignettes/analisis-resultados.Rmd" class="external-link"><code>vignettes/analisis-resultados.Rmd</code></a></small>
       <div class="d-none name"><code>analisis-resultados.Rmd</code></div>
     </div>
 
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://hmeleiro.github.io/eleccionesdb-r">eleccionesdb</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://eleccionesdb-r.spainelectoralproject.com/">eleccionesdb</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
@@ -96,8 +96,8 @@ tabla:</p>
 <code>year</code>, <code>mes</code>, <code>tipo_eleccion</code>,
 <code>tipo_territorio</code>, <code>territorio_nombre</code>,
 <code>codigo_ccaa</code>, <code>codigo_provincia</code>,
-<code>codigo_municipio</code>, <code>codigo_distrito</code>,
-<code>codigo_seccion</code>
+<code>codigo_circunscripcion</code>, <code>codigo_municipio</code>,
+<code>codigo_distrito</code>, <code>codigo_seccion</code>
 </li>
 </ul>
 <p>La unión de votos y totales se realiza internamente (no hace falta
@@ -112,17 +112,17 @@ renombra las columnas y devuelve solo las más útiles para análisis.</p>
 <span>  all_pages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Las 25 columnas listas para usar directamente:</span></span>
+<span><span class="co"># Las 26 columnas listas para usar directamente:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">andalucia</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "year"              "mes"               "tipo_eleccion"</span></span>
 <span><span class="co">#&gt;  [4] "tipo_territorio"   "territorio_nombre" "codigo_ccaa"</span></span>
-<span><span class="co">#&gt;  [7] "codigo_provincia"  "codigo_municipio"  "codigo_distrito"</span></span>
-<span><span class="co">#&gt; [10] "codigo_seccion"    "censo_ine"         "votos_validos"</span></span>
-<span><span class="co">#&gt; [13] "abstenciones"      "votos_blancos"     "votos_nulos"</span></span>
-<span><span class="co">#&gt; [16] "participacion_1"   "participacion_2"   "participacion_3"</span></span>
-<span><span class="co">#&gt; [19] "siglas"            "denominacion"      "partido_recode"</span></span>
-<span><span class="co">#&gt; [22] "partido_agrupacion" "votos"            "representantes"</span></span>
-<span><span class="co">#&gt; [25] "nrepresentantes"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [7] "codigo_provincia"  "codigo_circunscripcion" "codigo_municipio"</span></span>
+<span><span class="co">#&gt; [10] "codigo_distrito"   "codigo_seccion"    "censo_ine"</span></span>
+<span><span class="co">#&gt; [13] "votos_validos"     "abstenciones"      "votos_blancos"</span></span>
+<span><span class="co">#&gt; [16] "votos_nulos"       "participacion_1"   "participacion_2"</span></span>
+<span><span class="co">#&gt; [19] "participacion_3"   "siglas"            "denominacion"</span></span>
+<span><span class="co">#&gt; [22] "partido_recode"    "partido_agrupacion" "votos"</span></span>
+<span><span class="co">#&gt; [25] "representantes"    "nrepresentantes"</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="atajos-territoriales">Atajos territoriales<a class="anchor" aria-label="anchor" href="#atajos-territoriales"></a>
 </h3>
@@ -143,14 +143,18 @@ evitan tener que escribir <code>tipo_territorio</code> cada vez:</p>
 <td><code>get_resultados(..., tipo_territorio = "ccaa")</code></td>
 </tr>
 <tr class="even">
-<td><code>get_provincia(...)</code></td>
+<td><code>get_provincias(...)</code></td>
 <td><code>get_resultados(..., tipo_territorio = "provincia")</code></td>
 </tr>
 <tr class="odd">
+<td><code>get_circunscripciones(...)</code></td>
+<td><code>get_resultados(..., tipo_territorio = "circunscripcion")</code></td>
+</tr>
+<tr class="even">
 <td><code>get_municipios(...)</code></td>
 <td><code>get_resultados(..., tipo_territorio = "municipio")</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>get_secciones(...)</code></td>
 <td><code>get_resultados(..., tipo_territorio = "seccion")</code></td>
 </tr>
