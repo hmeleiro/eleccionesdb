@@ -88,8 +88,8 @@ Set \code{all_pages = TRUE} to automatically fetch all records.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://hmeleiro.github.io/eleccionesdb-r}
-  \item Report bugs at \url{https://github.com/hmeleiro/eleccionesdb-r/issues}
+  \item \url{https://eleccionesdb-r.spainelectoralproject.com/}
+  \item Report bugs at \url{https://github.com/hmeleiro/eleccionesdb/issues}
 }
 
 }

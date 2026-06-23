@@ -1,4 +1,4 @@
-url: https://hmeleiro.github.io/eleccionesdb-r
+url: https://eleccionesdb-r.spainelectoralproject.com/
 template:
   package: spainelectoraltheme
   bootstrap: 5
@@ -36,6 +36,7 @@ reference:
       - get_provincias
       - get_municipios
       - get_secciones
+      - get_circunscripciones
   - title: Elecciones
     contents:
       - get_tipos_eleccion

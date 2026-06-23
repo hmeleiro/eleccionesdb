@@ -103,7 +103,7 @@ edb_download_sqlite <- function(path = NULL, force = FALSE) {
 #' @noRd
 edb_sqlite_remote_manifest <- function() {
     resp <- httr2::request(.edb_sqlite_manifest_url) |>
-        httr2::req_user_agent("eleccionesdb-r/0.1.0") |>
+        httr2::req_user_agent("eleccionesdb/0.1.0") |
         httr2::req_perform(error_call = rlang::caller_env())
     manifest <- httr2::resp_body_json(resp, simplifyVector = TRUE)
     edb_validate_manifest(manifest)
@@ -112,7 +112,7 @@ edb_sqlite_remote_manifest <- function() {
 #' @noRd
 edb_download_file <- function(url, path) {
     req <- httr2::request(url) |>
-        httr2::req_user_agent("eleccionesdb-r/0.1.0") |>
+        httr2::req_user_agent("eleccionesdb/0.1.0") |
         httr2::req_progress()
     httr2::req_perform(req, path = path, error_call = rlang::caller_env())
     invisible(path)

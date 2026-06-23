@@ -13,8 +13,8 @@ Description: Provides functions to access Spanish electoral data through the
     with sensible flattening. Covers elections, territories, parties,
     results, and CERA (overseas vote) endpoints.
 License: GPL (>= 3)
-URL: https://hmeleiro.github.io/eleccionesdb-r
-BugReports: https://github.com/hmeleiro/eleccionesdb-r/issues
+URL: https://eleccionesdb-r.spainelectoralproject.com/
+BugReports: https://github.com/hmeleiro/eleccionesdb/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

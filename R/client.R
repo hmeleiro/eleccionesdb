@@ -44,11 +44,17 @@ edb_set_api_key <- function(key, persist = FALSE) {
 #' @export
 edb_get_api_key <- function() {
     key <- getOption("eleccionesdb.api_key", NULL)
-    if (!is.null(key) && nchar(key) > 0) return(key)
+    if (!is.null(key) && nchar(key) > 0) {
+        return(key)
+    }
     key <- Sys.getenv("ELECCIONESDB_API_KEY", unset = NA)
-    if (!is.na(key) && nchar(key) > 0) return(key)
+    if (!is.na(key) && nchar(key) > 0) {
+        return(key)
+    }
     key <- .eleccionesdb_env$api_key
-    if (!is.null(key) && nchar(key) > 0) return(key)
+    if (!is.null(key) && nchar(key) > 0) {
+        return(key)
+    }
     NULL
 }
 #' Set the EleccionesDB API base URL
@@ -90,7 +96,7 @@ edb_base_request <- function(path, api_key = NULL, require_key = TRUE) {
     req <- httr2::request(.eleccionesdb_env$base_url) |>
         httr2::req_url_path_append(path) |>
         httr2::req_headers("Accept" = "application/json") |>
-        httr2::req_user_agent("eleccionesdb-r/0.1.0")
+        httr2::req_user_agent("eleccionesdb/0.1.0")
     # Determinar si el endpoint requiere clave
     is_protected <- grepl("^/v1/", path) && !grepl("^/v1/auth/", path)
     if (is_protected && isTRUE(require_key)) {
