@@ -14,6 +14,31 @@ test_that("update check compares the remote and local manifests", {
     expect_false(result$update_available)
 })
 
+test_that("remote manifest and archive downloads pass httr2 request objects", {
+    manifest <- list(
+        schema_version = 1L, generated_at = "2026-06-19T00:00:00Z",
+        url = "https://example.com/eleccionesdb_sqlite.zip",
+        archive_size = 10, archive_sha256 = paste(rep("a", 64), collapse = ""),
+        database_filename = "eleccionesdb.sqlite", database_size = 8,
+        database_sha256 = paste(rep("b", 64), collapse = "")
+    )
+    performed <- character()
+    local_mocked_bindings(
+        req_perform = function(req, path = NULL, ...) {
+            expect_s3_class(req, "httr2_request")
+            performed <<- c(performed, if (is.null(path)) "manifest" else path)
+            structure(list(), class = "httr2_response")
+        },
+        resp_body_json = function(resp, simplifyVector = TRUE, ...) manifest,
+        .package = "httr2"
+    )
+
+    expect_equal(eleccionesdb:::edb_sqlite_remote_manifest(), manifest)
+    zip_path <- tempfile(fileext = ".zip")
+    expect_invisible(eleccionesdb:::edb_download_file(manifest$url, zip_path))
+    expect_equal(performed, c("manifest", zip_path))
+})
+
 test_that("download installs a validated archive and avoids repeat download", {
     source_db <- create_test_sqlite()
     zip_path <- tempfile(fileext = ".zip")
