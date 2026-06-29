@@ -81,6 +81,15 @@ sqlite_where <- function(state) {
 }
 
 #' @noRd
+sqlite_db_get_query <- function(con, sql, params = list()) {
+    if (length(params) == 0L) {
+        DBI::dbGetQuery(con, sql)
+    } else {
+        DBI::dbGetQuery(con, sql, params = params)
+    }
+}
+
+#' @noRd
 sqlite_query <- function(select, from, state = list(clauses = character(), params = list()),
                          order_by = NULL, limit = 50L, skip = 0L,
                          all_pages = FALSE) {
@@ -89,7 +98,7 @@ sqlite_query <- function(select, from, state = list(clauses = character(), param
     on.exit(DBI::dbDisconnect(con), add = TRUE)
     where <- sqlite_where(state)
     count_sql <- paste("SELECT COUNT(*) AS n", from, where)
-    total <- DBI::dbGetQuery(con, count_sql, params = state$params)[["n"]][[1]]
+    total <- sqlite_db_get_query(con, count_sql, state$params)[["n"]][[1]]
 
     sql <- paste("SELECT", select, from, where)
     if (!is.null(order_by)) sql <- paste(sql, "ORDER BY", order_by)
@@ -97,7 +106,7 @@ sqlite_query <- function(select, from, state = list(clauses = character(), param
     if (!isTRUE(all_pages)) sql <- paste(sql, "LIMIT ? OFFSET ?")
     params <- state$params
     if (!isTRUE(all_pages)) params <- c(params, list(as.integer(limit), effective_skip))
-    tbl <- tibble::as_tibble(DBI::dbGetQuery(con, sql, params = params))
+    tbl <- tibble::as_tibble(sqlite_db_get_query(con, sql, params))
     attr(tbl, "edb_total") <- as.integer(total)
     attr(tbl, "edb_skip") <- effective_skip
     attr(tbl, "edb_limit") <- if (isTRUE(all_pages)) as.integer(total) else as.integer(limit)

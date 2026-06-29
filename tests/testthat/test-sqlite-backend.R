@@ -31,8 +31,10 @@ test_that("SQLite serves master-data functions with pagination", {
     expect_equal(get_territorio_hijos(1, all_pages = TRUE)$id, c(20L, 21L))
 
     expect_equal(get_partidos(siglas = "pso")$id, 9451L)
+    expect_equal(get_partidos()$id, c(8180L, 9451L))
     expect_equal(get_partido(9451)$recode_agrupacion, "PSOE")
     expect_equal(get_partidos_recode(agrupacion = "PSOE")$id, 80L)
+    expect_equal(get_partidos_recode(all_pages = TRUE)$id, c(73L, 80L))
     expect_equal(get_partido_recode(80)$partidos$id, 9451L)
 })
 
