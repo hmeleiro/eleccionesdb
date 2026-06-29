@@ -2,6 +2,8 @@
 
 ## eleccionesdb 0.1.0
 
+- Acepta snapshots SQLite con `schema_version` 2 y valida sus
+  tablas/columnas adicionales.
 - Añade `codigo_circunscripcion` a los resultados combinados y como
   filtro territorial en las funciones de resultados.
 - Añade
