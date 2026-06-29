@@ -1,7 +1,23 @@
+.edb_sqlite_supported_schema_versions <- c(1L, 2L)
+
 .edb_sqlite_required_tables <- c(
     "tipos_eleccion", "elecciones", "territorios", "partidos_recode",
     "partidos", "resumen_territorial", "votos_territoriales"
 )
+
+.edb_sqlite_v2_required_tables <- c("elecciones_fuentes")
+
+.edb_sqlite_v2_required_partidos_recode_cols <- c(
+    "bloque", "color_pastel", "color_oscuro"
+)
+
+edb_sqlite_schema_supported <- function(version) {
+    as.integer(version) %in% .edb_sqlite_supported_schema_versions
+}
+
+edb_sqlite_supported_schema_versions <- function() {
+    paste(.edb_sqlite_supported_schema_versions, collapse = ", ")
+}
 
 #' @noRd
 edb_sqlite_connect <- function(path = edb_sqlite_active_path()) {
@@ -21,8 +37,26 @@ edb_sqlite_validate <- function(path, quick = FALSE) {
         cli::cli_abort("La base SQLite no contiene las tablas requeridas: {paste(missing, collapse = ', ')}.")
     }
     version <- DBI::dbGetQuery(con, "PRAGMA user_version")[[1]][[1]]
-    if (!identical(as.integer(version), 1L)) {
-        cli::cli_abort("Version de esquema SQLite no compatible: {version}.")
+    version <- as.integer(version)
+    if (!edb_sqlite_schema_supported(version)) {
+        cli::cli_abort(c(
+            "x" = "Version de esquema SQLite no compatible: {version}.",
+            "i" = "Versiones soportadas: {edb_sqlite_supported_schema_versions()}."
+        ))
+    }
+    if (version >= 2L) {
+        missing_v2 <- setdiff(.edb_sqlite_v2_required_tables, tables)
+        if (length(missing_v2) > 0L) {
+            cli::cli_abort("La base SQLite no contiene las tablas requeridas: {paste(missing_v2, collapse = ', ')}.")
+        }
+        partidos_recode_cols <- DBI::dbListFields(con, "partidos_recode")
+        missing_recode_cols <- setdiff(
+            .edb_sqlite_v2_required_partidos_recode_cols,
+            partidos_recode_cols
+        )
+        if (length(missing_recode_cols) > 0L) {
+            cli::cli_abort("La tabla partidos_recode no contiene: {paste(missing_recode_cols, collapse = ', ')}.")
+        }
     }
     resumen_cols <- DBI::dbListFields(con, "resumen_territorial")
     required_cols <- c(

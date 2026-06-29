@@ -3,7 +3,7 @@ test_that("update check compares the remote and local manifests", {
     writeBin(charToRaw("database"), path)
     hash <- eleccionesdb:::edb_sha256(path)
     manifest <- list(
-        schema_version = 1L, generated_at = "2026-06-19T00:00:00Z",
+        schema_version = 2L, generated_at = "2026-06-19T00:00:00Z",
         url = "https://example.com/eleccionesdb_sqlite.zip",
         archive_size = 10, archive_sha256 = paste(rep("a", 64), collapse = ""),
         database_filename = "eleccionesdb.sqlite", database_size = file.info(path)$size,
@@ -16,7 +16,7 @@ test_that("update check compares the remote and local manifests", {
 
 test_that("remote manifest and archive downloads pass httr2 request objects", {
     manifest <- list(
-        schema_version = 1L, generated_at = "2026-06-19T00:00:00Z",
+        schema_version = 2L, generated_at = "2026-06-19T00:00:00Z",
         url = "https://example.com/eleccionesdb_sqlite.zip",
         archive_size = 10, archive_sha256 = paste(rep("a", 64), collapse = ""),
         database_filename = "eleccionesdb.sqlite", database_size = 8,
@@ -48,7 +48,7 @@ test_that("download installs a validated archive and avoids repeat download", {
     zip::zipr(zip_path, "eleccionesdb.sqlite")
 
     manifest <- list(
-        schema_version = 1L, generated_at = "2026-06-19T00:00:00Z",
+        schema_version = 2L, generated_at = "2026-06-19T00:00:00Z",
         url = "https://example.com/eleccionesdb_sqlite.zip",
         archive_size = unname(file.info(zip_path)$size),
         archive_sha256 = eleccionesdb:::edb_sha256(zip_path),
@@ -81,6 +81,18 @@ test_that("download installs a validated archive and avoids repeat download", {
 test_that("invalid manifests and checksums are rejected", {
     invalid <- list(schema_version = 2L)
     expect_error(eleccionesdb:::edb_validate_manifest(invalid), "no contiene")
+
+    unsupported <- list(
+        schema_version = 3L, generated_at = "2026-06-19T00:00:00Z",
+        url = "https://example.com/eleccionesdb_sqlite.zip",
+        archive_size = 10, archive_sha256 = paste(rep("a", 64), collapse = ""),
+        database_filename = "eleccionesdb.sqlite", database_size = 8,
+        database_sha256 = paste(rep("b", 64), collapse = "")
+    )
+    expect_error(
+        eleccionesdb:::edb_validate_manifest(unsupported),
+        "no compatible"
+    )
 
     path <- tempfile()
     writeBin(charToRaw("contenido"), path)

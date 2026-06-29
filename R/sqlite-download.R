@@ -129,8 +129,12 @@ edb_validate_manifest <- function(manifest) {
     if (length(missing) > 0L) {
         cli::cli_abort("El manifiesto SQLite no contiene: {paste(missing, collapse = ', ')}.")
     }
-    if (!identical(as.integer(manifest[["schema_version"]]), 1L)) {
-        cli::cli_abort("Version de esquema SQLite no compatible: {manifest[['schema_version']]}.")
+    schema_version <- as.integer(manifest[["schema_version"]])
+    if (!edb_sqlite_schema_supported(schema_version)) {
+        cli::cli_abort(c(
+            "x" = "Version de esquema SQLite no compatible: {manifest[['schema_version']]}.",
+            "i" = "Versiones soportadas: {edb_sqlite_supported_schema_versions()}."
+        ))
     }
     hashes <- c(manifest[["archive_sha256"]], manifest[["database_sha256"]])
     if (any(!grepl("^[0-9a-fA-F]{64}$", hashes))) {

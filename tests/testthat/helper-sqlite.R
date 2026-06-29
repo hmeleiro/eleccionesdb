@@ -1,11 +1,11 @@
-create_test_sqlite <- function(path = tempfile(fileext = ".sqlite")) {
+create_test_sqlite <- function(path = tempfile(fileext = ".sqlite"), schema_version = 2L) {
     skip_if_not_installed("DBI")
     skip_if_not_installed("RSQLite")
     con <- DBI::dbConnect(RSQLite::SQLite(), path)
     on.exit(DBI::dbDisconnect(con), add = TRUE)
 
     ddl <- c(
-        "PRAGMA user_version = 1",
+        paste0("PRAGMA user_version = ", schema_version),
         "CREATE TABLE tipos_eleccion (codigo TEXT PRIMARY KEY, descripcion TEXT NOT NULL)",
         paste(
             "CREATE TABLE elecciones (id INTEGER PRIMARY KEY, tipo_eleccion TEXT,",
@@ -20,7 +20,8 @@ create_test_sqlite <- function(path = tempfile(fileext = ".sqlite")) {
         ),
         paste(
             "CREATE TABLE partidos_recode (id INTEGER PRIMARY KEY,",
-            "partido_recode TEXT, agrupacion TEXT, color TEXT)"
+            "partido_recode TEXT, agrupacion TEXT, bloque TEXT, color TEXT,",
+            "color_pastel TEXT, color_oscuro TEXT)"
         ),
         paste(
             "CREATE TABLE partidos (id INTEGER PRIMARY KEY, partido_recode_id INTEGER,",
@@ -37,6 +38,10 @@ create_test_sqlite <- function(path = tempfile(fileext = ".sqlite")) {
             "CREATE TABLE votos_territoriales (id INTEGER PRIMARY KEY,",
             "eleccion_id INTEGER, territorio_id INTEGER, partido_id INTEGER,",
             "votos INTEGER, representantes INTEGER)"
+        ),
+        paste(
+            "CREATE TABLE elecciones_fuentes (eleccion_id INTEGER PRIMARY KEY,",
+            "fuente TEXT, url_fuente TEXT, observaciones TEXT)"
         )
     )
     for (sql in ddl) DBI::dbExecute(con, sql)
@@ -73,7 +78,16 @@ create_test_sqlite <- function(path = tempfile(fileext = ".sqlite")) {
     ), append = TRUE)
     DBI::dbWriteTable(con, "partidos_recode", data.frame(
         id = c(73L, 80L), partido_recode = c("PP", "PSOE"),
-        agrupacion = c("PP", "PSOE"), color = c("#0056A5", "#E30613")
+        agrupacion = c("PP", "PSOE"), bloque = c("derecha", "izquierda"),
+        color = c("#0056A5", "#E30613"),
+        color_pastel = c("#9cc3e6", "#f4a3a3"),
+        color_oscuro = c("#003f7d", "#a80000")
+    ), append = TRUE)
+    DBI::dbWriteTable(con, "elecciones_fuentes", data.frame(
+        eleccion_id = 208L,
+        fuente = "Ministerio del Interior",
+        url_fuente = "https://example.com",
+        observaciones = NA_character_
     ), append = TRUE)
     DBI::dbWriteTable(con, "partidos", data.frame(
         id = c(8180L, 9451L), partido_recode_id = c(73L, 80L),
